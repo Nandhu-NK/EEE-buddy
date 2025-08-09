@@ -1,8 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ohm's Law Calculator - EEE Buddy</title>
-    <link rel="stylesheet" href="style.css">
+    <title>EEE Buddy - Ohm's Law Calculator</title>
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f1f1f1;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            background-color: white;
+            width: 300px;
+            padding: 30px;
+            margin: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -27,6 +55,50 @@
         <h2 id="result"></h2>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function calculate() {
+            let V = parseFloat(document.getElementById("voltage").value);
+            let I = parseFloat(document.getElementById("current").value);
+            let R = parseFloat(document.getElementById("resistance").value);
+            let P = parseFloat(document.getElementById("power").value);
+
+            if (!isNaN(V) && !isNaN(I)) {
+                R = V / I;
+                P = V * I;
+            } else if (!isNaN(V) && !isNaN(R)) {
+                I = V / R;
+                P = V * I;
+            } else if (!isNaN(I) && !isNaN(R)) {
+                V = I * R;
+                P = V * I;
+            } else if (!isNaN(P) && !isNaN(I)) {
+                V = P / I;
+                R = V / I;
+            } else if (!isNaN(P) && !isNaN(V)) {
+                I = P / V;
+                R = V / I;
+            } else if (!isNaN(P) && !isNaN(R)) {
+                I = Math.sqrt(P / R);
+                V = I * R;
+            } else {
+                alert("Please enter at least two values.");
+                return;
+            }
+
+            document.getElementById("result").innerHTML =
+                `Voltage (V): ${V.toFixed(2)} V<br>` +
+                `Current (I): ${I.toFixed(2)} A<br>` +
+                `Resistance (R): ${R.toFixed(2)} Ω<br>` +
+                `Power (P): ${P.toFixed(2)} W`;
+        }
+
+        function clearFields() {
+            document.getElementById("voltage").value = "";
+            document.getElementById("current").value = "";
+            document.getElementById("resistance").value = "";
+            document.getElementById("power").value = "";
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
 </body>
 </html>
