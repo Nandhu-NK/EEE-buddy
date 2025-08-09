@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>EEE Buddy - Power Calculator</title>
+    <title>Ohm's Law Calculator - EEE Buddy</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>EEE Buddy 🔌</h1>
-        <p>Power (W) = Voltage (V) × Current (I)</p>
+        <h1>EEE Buddy ⚡</h1>
+        <h3>Ohm's Law & Power Calculator</h3>
 
         <label>Voltage (V):</label>
         <input type="number" id="voltage" placeholder="Enter Voltage">
@@ -15,7 +15,14 @@
         <label>Current (I):</label>
         <input type="number" id="current" placeholder="Enter Current">
 
-        <button onclick="calculatePower()">Calculate Power</button>
+        <label>Resistance (R):</label>
+        <input type="number" id="resistance" placeholder="Enter Resistance">
+
+        <label>Power (P):</label>
+        <input type="number" id="power" placeholder="Enter Power">
+
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="clearFields()">Clear</button>
 
         <h2 id="result"></h2>
     </div>
