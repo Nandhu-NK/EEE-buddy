@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>EEE Buddy - Ohm's Law Calculator</title>
+    <title>EEE Buddy - Calculators</title>
     <style>
         body {
             font-family: Arial;
@@ -11,7 +11,7 @@
         }
         .container {
             background-color: white;
-            width: 300px;
+            width: 350px;
             padding: 30px;
             margin: auto;
             border-radius: 15px;
@@ -30,75 +30,94 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="container" id="home">
         <h1>EEE Buddy ⚡</h1>
-        <h3>Ohm's Law & Power Calculator</h3>
+        <h3>Select a Calculator</h3>
+        <button onclick="showCalculator('ohm')">Ohm's Law Calculator</button>
+        <button onclick="showCalculator('motor')">Motor Efficiency Calculator</button>
+    </div>
 
+    <!-- Ohm's Law Calculator -->
+    <div class="container hidden" id="ohmCalc">
+        <h2>Ohm's Law Calculator</h2>
         <label>Voltage (V):</label>
-        <input type="number" id="voltage" placeholder="Enter Voltage">
-
+        <input type="number" id="voltage">
         <label>Current (I):</label>
-        <input type="number" id="current" placeholder="Enter Current">
-
+        <input type="number" id="current">
         <label>Resistance (R):</label>
-        <input type="number" id="resistance" placeholder="Enter Resistance">
-
+        <input type="number" id="resistance">
         <label>Power (P):</label>
-        <input type="number" id="power" placeholder="Enter Power">
+        <input type="number" id="power">
+        <button onclick="calculateOhm()">Calculate</button>
+        <button onclick="goHome()">Back</button>
+        <h3 id="ohmResult"></h3>
+    </div>
 
-        <button onclick="calculate()">Calculate</button>
-        <button onclick="clearFields()">Clear</button>
-
-        <h2 id="result"></h2>
+    <!-- Motor Efficiency Calculator -->
+    <div class="container hidden" id="motorCalc">
+        <h2>Motor Efficiency Calculator</h2>
+        <label>Output Power (W):</label>
+        <input type="number" id="outputPower">
+        <label>Input Power (W):</label>
+        <input type="number" id="inputPower">
+        <button onclick="calculateEfficiency()">Calculate</button>
+        <button onclick="goHome()">Back</button>
+        <h3 id="motorResult"></h3>
     </div>
 
     <script>
-        function calculate() {
+        function showCalculator(type) {
+            document.getElementById('home').classList.add('hidden');
+            if (type === 'ohm') {
+                document.getElementById('ohmCalc').classList.remove('hidden');
+            } else if (type === 'motor') {
+                document.getElementById('motorCalc').classList.remove('hidden');
+            }
+        }
+
+        function goHome() {
+            document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
+            document.getElementById('home').classList.remove('hidden');
+        }
+
+        function calculateOhm() {
             let V = parseFloat(document.getElementById("voltage").value);
             let I = parseFloat(document.getElementById("current").value);
             let R = parseFloat(document.getElementById("resistance").value);
             let P = parseFloat(document.getElementById("power").value);
 
-            if (!isNaN(V) && !isNaN(I)) {
-                R = V / I;
-                P = V * I;
-            } else if (!isNaN(V) && !isNaN(R)) {
-                I = V / R;
-                P = V * I;
-            } else if (!isNaN(I) && !isNaN(R)) {
-                V = I * R;
-                P = V * I;
-            } else if (!isNaN(P) && !isNaN(I)) {
-                V = P / I;
-                R = V / I;
-            } else if (!isNaN(P) && !isNaN(V)) {
-                I = P / V;
-                R = V / I;
-            } else if (!isNaN(P) && !isNaN(R)) {
-                I = Math.sqrt(P / R);
-                V = I * R;
-            } else {
-                alert("Please enter at least two values.");
+            if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
+            else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
+            else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
+            else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
+            else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
+            else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
+            else { alert("Enter at least two values."); return; }
+
+            document.getElementById("ohmResult").innerHTML =
+                `V: ${V.toFixed(2)} V<br>I: ${I.toFixed(2)} A<br>R: ${R.toFixed(2)} Ω<br>P: ${P.toFixed(2)} W`;
+        }
+
+        function calculateEfficiency() {
+            let output = parseFloat(document.getElementById("outputPower").value);
+            let input = parseFloat(document.getElementById("inputPower").value);
+            if (isNaN(output) || isNaN(input) || input === 0) {
+                alert("Enter valid output & input power values.");
                 return;
             }
-
-            document.getElementById("result").innerHTML =
-                `Voltage (V): ${V.toFixed(2)} V<br>` +
-                `Current (I): ${I.toFixed(2)} A<br>` +
-                `Resistance (R): ${R.toFixed(2)} Ω<br>` +
-                `Power (P): ${P.toFixed(2)} W`;
-        }
-
-        function clearFields() {
-            document.getElementById("voltage").value = "";
-            document.getElementById("current").value = "";
-            document.getElementById("resistance").value = "";
-            document.getElementById("power").value = "";
-            document.getElementById("result").innerHTML = "";
+            let efficiency = (output / input) * 100;
+            document.getElementById("motorResult").innerHTML = `Efficiency: ${efficiency.toFixed(2)} %`;
         }
     </script>
+
 </body>
 </html>
+
+   
