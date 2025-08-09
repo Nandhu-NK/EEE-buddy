@@ -1,123 +1,306 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>EEE Buddy - Calculators</title>
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f1f1f1;
-            text-align: center;
-            margin-top: 50px;
-        }
-        .container {
-            background-color: white;
-            width: 350px;
-            padding: 30px;
-            margin: auto;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-        input, button {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EEE Buddy — Premium Calculators</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- tiny inline svg favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%232c7be5'/%3E%3Ctext x='50' y='57' font-size='48' text-anchor='middle' fill='white' font-family='Poppins' font-weight='700'%3EEE%3C/text%3E%3C/svg%3E">
+
+  <style>
+    :root{
+      --bg1: linear-gradient(135deg,#0f172a 0%, #0b2447 50%, #0b3b6f 100%);
+      --glass: rgba(255,255,255,0.08);
+      --accent: #2c7be5;
+      --accent-2: #75b3ff;
+      --card-bg: rgba(255,255,255,0.06);
+      --text: #e6eef8;
+      --muted: #9fb6d7;
+      --success: #2ec4b6;
+    }
+
+    /* dark mode variant */
+    body { margin:0; font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: var(--bg1); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; }
+    .page { max-width:1024px; margin:36px auto; padding:24px; display:grid; gap:20px; grid-template-columns: 360px 1fr; align-items:start; }
+
+    /* responsive */
+    @media (max-width:880px){ .page{ grid-template-columns: 1fr; padding:18px } .left{ order:2 } .right{ order:1 } }
+
+    /* left panel */
+    .left{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border-radius:16px; padding:22px; backdrop-filter: blur(6px); box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .brand { display:flex; gap:12px; align-items:center; margin-bottom:12px; }
+    .logo { width:56px; height:56px; border-radius:12px; background: linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; color:white; font-size:22px; }
+    h1 { margin:0; font-size:18px; font-weight:700; color:white; }
+    p.subtitle { margin:8px 0 14px 0; color:var(--muted); font-size:13px; }
+
+    .menu { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+    .menu button{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text); padding:12px 14px; border-radius:10px; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600; transition:all .18s; }
+    .menu button:hover{ transform:translateY(-3px); box-shadow: 0 8px 18px rgba(12,20,40,0.35); border-color: rgba(255,255,255,0.12) }
+    .badge { background: rgba(255,255,255,0.07); padding:6px 8px; border-radius:8px; color:var(--accent-2); font-weight:700; font-size:12px; }
+
+    .info { margin-top:14px; font-size:13px; color:var(--muted); line-height:1.4; }
+
+    /* right panel */
+    .right{
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius:16px; padding:26px; box-shadow: 0 6px 24px rgba(0,0,0,0.45); min-height:320px;
+    }
+
+    .calc-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
+    .calc-title { font-size:20px; font-weight:700; }
+    .controls { display:flex; gap:10px; align-items:center; }
+
+    /* form */
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px; }
+    @media (max-width:580px){ .grid{ grid-template-columns: 1fr } }
+
+    label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; font-weight:600; }
+    input[type="number"]{ width:100%; padding:12px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color:var(--text); font-size:15px; outline:none; }
+    input[type="number"]::placeholder{ color: rgba(255,255,255,0.3) }
+
+    .actions { margin-top:16px; display:flex; gap:10px; align-items:center; }
+    .primary{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 8px 20px rgba(44,123,229,0.18); }
+    .ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text); padding:10px 12px; border-radius:10px; cursor:pointer; }
+
+    .result {
+      margin-top:18px; padding:14px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04);
+    }
+    .result p { margin:0; color:var(--muted); line-height:1.6; font-weight:600; }
+    .result .big { font-size:18px; color:var(--text); margin-top:8px; font-weight:700; }
+
+    .footer { margin-top:18px; color:var(--muted); font-size:13px; text-align:center; }
+
+    .toggle { display:flex; gap:8px; align-items:center; font-size:13px; color:var(--muted) }
+    .switch { width:42px; height:24px; background:rgba(255,255,255,0.06); border-radius:16px; position:relative; cursor:pointer; }
+    .knob { position:absolute; top:3px; left:3px; width:18px; height:18px; background:white; border-radius:50%; transition:all .18s; }
+    .switch.on{ background: linear-gradient(90deg,var(--accent),var(--accent-2)); }
+    .switch.on .knob{ left:21px; }
+
+  </style>
 </head>
 <body>
 
-    <div class="container" id="home">
-        <h1>EEE Buddy ⚡</h1>
-        <h3>Select a Calculator</h3>
-        <button onclick="showCalculator('ohm')">Ohm's Law Calculator</button>
-        <button onclick="showCalculator('motor')">Motor Efficiency Calculator</button>
+  <div class="page">
+    <!-- left -->
+    <div class="left">
+      <div class="brand">
+        <div class="logo">EE</div>
+        <div>
+          <h1>EEE Buddy <span style="font-size:12px;color:var(--muted);font-weight:600">Premium</span></h1>
+          <div class="subtitle">Fast calculators for EEE students — Ohm's law, Motor efficiency & more.</div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <button onclick="showCalculator('ohm')">⚡ Ohm's Law Calculator <span class="badge">Core</span></button>
+        <button onclick="showCalculator('motor')">🔧 Motor Efficiency <span class="badge">Useful</span></button>
+        <button onclick="showCalculator('energy')">🔋 Energy Estimator <span class="badge">Add-on</span></button>
+      </div>
+
+      <div class="info">
+        <strong>Tip:</strong> Enter <em>at least two</em> values for Ohm's Law. Results are rounded to 2 decimals.
+      </div>
     </div>
 
-    <!-- Ohm's Law Calculator -->
-    <div class="container hidden" id="ohmCalc">
-        <h2>Ohm's Law Calculator</h2>
-        <label>Voltage (V):</label>
-        <input type="number" id="voltage">
-        <label>Current (I):</label>
-        <input type="number" id="current">
-        <label>Resistance (R):</label>
-        <input type="number" id="resistance">
-        <label>Power (P):</label>
-        <input type="number" id="power">
-        <button onclick="calculateOhm()">Calculate</button>
-        <button onclick="goHome()">Back</button>
-        <h3 id="ohmResult"></h3>
+    <!-- right -->
+    <div class="right">
+      <div class="calc-head">
+        <div>
+          <div class="calc-title" id="calcTitle">Welcome</div>
+          <div style="color:var(--muted); font-size:13px" id="calcDesc">Choose a calculator from the left to begin.</div>
+        </div>
+
+        <div class="controls">
+          <div class="toggle">
+            <span style="color:var(--muted);">Dark</span>
+            <div id="darkSwitch" class="switch" role="button" onclick="toggleTheme()"><div class="knob"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ohm -->
+      <div id="ohm" style="display:none">
+        <div class="grid">
+          <div>
+            <label for="voltage">Voltage (V)</label>
+            <input id="voltage" type="number" placeholder="e.g. 230">
+          </div>
+          <div>
+            <label for="current">Current (A)</label>
+            <input id="current" type="number" placeholder="e.g. 5">
+          </div>
+          <div>
+            <label for="resistance">Resistance (Ω)</label>
+            <input id="resistance" type="number" placeholder="e.g. 46">
+          </div>
+          <div>
+            <label for="power">Power (W)</label>
+            <input id="power" type="number" placeholder="e.g. 1150">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" onclick="calculateOhm()">Calculate</button>
+          <button class="ghost" onclick="clearOhm()">Clear</button>
+        </div>
+
+        <div class="result" id="ohmResult" style="display:none">
+          <p id="ohmText"></p>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="ghost" onclick="copyResult('ohmText')">Copy</button>
+            <button class="ghost" onclick="fillInputs()">Fill inputs</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motor -->
+      <div id="motor" style="display:none">
+        <div class="grid">
+          <div>
+            <label for="outputPower">Output Power (W)</label>
+            <input id="outputPower" type="number" placeholder="e.g. 1500">
+          </div>
+          <div>
+            <label for="inputPower">Input Power (W)</label>
+            <input id="inputPower" type="number" placeholder="e.g. 1700">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" onclick="calculateMotor()">Calculate</button>
+          <button class="ghost" onclick="clearMotor()">Clear</button>
+        </div>
+
+        <div class="result" id="motorResult" style="display:none">
+          <p id="motorText"></p>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="ghost" onclick="copyResult('motorText')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Energy estimator placeholder -->
+      <div id="energy" style="display:none">
+        <p style="color:var(--muted)">Energy estimator coming soon — I can add simple unit-to-bill or kWh calculators here. Tell me if you want this.</p>
+      </div>
+
+      <div class="footer">Made for EEE students • Simple • Fast • Mobile friendly</div>
     </div>
+  </div>
 
-    <!-- Motor Efficiency Calculator -->
-    <div class="container hidden" id="motorCalc">
-        <h2>Motor Efficiency Calculator</h2>
-        <label>Output Power (W):</label>
-        <input type="number" id="outputPower">
-        <label>Input Power (W):</label>
-        <input type="number" id="inputPower">
-        <button onclick="calculateEfficiency()">Calculate</button>
-        <button onclick="goHome()">Back</button>
-        <h3 id="motorResult"></h3>
-    </div>
+<script>
+  // small helper to show calculators
+  function showCalculator(name){
+    document.getElementById('calcTitle').innerText = name === 'ohm' ? "Ohm's Law Calculator" : name==='motor' ? "Motor Efficiency" : "Energy Estimator";
+    document.getElementById('calcDesc').innerText = name === 'ohm' ? "Enter any two values — the page will compute the rest." : name==='motor' ? "Compute motor efficiency (%) from input & output power." : "Choose an action.";
+    ['ohm','motor','energy'].forEach(id => {
+      document.getElementById(id).style.display = (id === name ? 'block' : 'none');
+      // hide results when switching
+      if(id === 'ohm') { document.getElementById('ohmResult').style.display = 'none'; }
+      if(id === 'motor') { document.getElementById('motorResult').style.display = 'none'; }
+    });
+    // scroll to top of right card nicely
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    <script>
-        function showCalculator(type) {
-            document.getElementById('home').classList.add('hidden');
-            if (type === 'ohm') {
-                document.getElementById('ohmCalc').classList.remove('hidden');
-            } else if (type === 'motor') {
-                document.getElementById('motorCalc').classList.remove('hidden');
-            }
-        }
+  // Ohm's computations
+  function calculateOhm(){
+    const V_in = parseFloat(document.getElementById('voltage').value);
+    const I_in = parseFloat(document.getElementById('current').value);
+    const R_in = parseFloat(document.getElementById('resistance').value);
+    const P_in = parseFloat(document.getElementById('power').value);
 
-        function goHome() {
-            document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
-            document.getElementById('home').classList.remove('hidden');
-        }
+    let V = !isNaN(V_in) ? V_in : NaN;
+    let I = !isNaN(I_in) ? I_in : NaN;
+    let R = !isNaN(R_in) ? R_in : NaN;
+    let P = !isNaN(P_in) ? P_in : NaN;
 
-        function calculateOhm() {
-            let V = parseFloat(document.getElementById("voltage").value);
-            let I = parseFloat(document.getElementById("current").value);
-            let R = parseFloat(document.getElementById("resistance").value);
-            let P = parseFloat(document.getElementById("power").value);
+    // at least two known
+    const known = [!isNaN(V), !isNaN(I), !isNaN(R), !isNaN(P)].filter(Boolean).length;
+    if(known < 2){ alert('Please enter at least two known values.'); return; }
 
-            if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
-            else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
-            else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
-            else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
-            else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
-            else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
-            else { alert("Enter at least two values."); return; }
+    // compute using safe order
+    if(!isNaN(V) && !isNaN(I)){ R = V / I; P = V * I; }
+    else if(!isNaN(V) && !isNaN(R)){ I = V / R; P = V * I; }
+    else if(!isNaN(I) && !isNaN(R)){ V = I * R; P = V * I; }
+    else if(!isNaN(P) && !isNaN(I)){ V = P / I; R = V / I; }
+    else if(!isNaN(P) && !isNaN(V)){ I = P / V; R = V / I; }
+    else if(!isNaN(P) && !isNaN(R)){ I = Math.sqrt(P / R); V = I * R; }
 
-            document.getElementById("ohmResult").innerHTML =
-                `V: ${V.toFixed(2)} V<br>I: ${I.toFixed(2)} A<br>R: ${R.toFixed(2)} Ω<br>P: ${P.toFixed(2)} W`;
-        }
+    // safety: if division by zero or NaN, stop
+    if(!isFinite(V) || !isFinite(I) || !isFinite(R) || !isFinite(P)){
+      alert('Invalid values or division by zero detected — check inputs.');
+      return;
+    }
 
-        function calculateEfficiency() {
-            let output = parseFloat(document.getElementById("outputPower").value);
-            let input = parseFloat(document.getElementById("inputPower").value);
-            if (isNaN(output) || isNaN(input) || input === 0) {
-                alert("Enter valid output & input power values.");
-                return;
-            }
-            let efficiency = (output / input) * 100;
-            document.getElementById("motorResult").innerHTML = `Efficiency: ${efficiency.toFixed(2)} %`;
-        }
-    </script>
+    // show rounded results
+    const Vstr = V.toFixed(2), Istr = I.toFixed(2), Rstr = R.toFixed(2), Pstr = P.toFixed(2);
+    const text = `Voltage: ${Vstr} V\nCurrent: ${Istr} A\nResistance: ${Rstr} Ω\nPower: ${Pstr} W`;
+    document.getElementById('ohmText').innerText = text;
+    document.getElementById('ohmResult').style.display = 'block';
+  }
+
+  // optional helper to fill calculated values back into inputs
+  function fillInputs(){
+    const txt = document.getElementById('ohmText').innerText;
+    if(!txt) return;
+    const lines = txt.split('\n');
+    lines.forEach(line => {
+      const parts = line.split(':');
+      if(parts.length < 2) return;
+      const name = parts[0].trim().toLowerCase();
+      const value = parseFloat(parts[1]);
+      if(name.includes('voltage')) document.getElementById('voltage').value = value;
+      if(name.includes('current')) document.getElementById('current').value = value;
+      if(name.includes('resistance')) document.getElementById('resistance').value = value;
+      if(name.includes('power')) document.getElementById('power').value = value;
+    });
+  }
+
+  function clearOhm(){
+    ['voltage','current','resistance','power'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ohmResult').style.display = 'none';
+  }
+
+  // Motor efficiency
+  function calculateMotor(){
+    const out = parseFloat(document.getElementById('outputPower').value);
+    const inp = parseFloat(document.getElementById('inputPower').value);
+    if(isNaN(out) || isNaN(inp) || inp === 0){ alert('Enter valid non-zero Input and Output power values.'); return; }
+    const eff = (out / inp) * 100;
+    document.getElementById('motorText').innerText = `Efficiency: ${eff.toFixed(2)} %\nOutput: ${out.toFixed(2)} W\nInput: ${inp.toFixed(2)} W`;
+    document.getElementById('motorResult').style.display = 'block';
+  }
+
+  function clearMotor(){
+    ['outputPower','inputPower'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('motorResult').style.display = 'none';
+  }
+
+  // copy helper
+  function copyResult(elemId){
+    const txt = document.getElementById(elemId).innerText;
+    navigator.clipboard?.writeText(txt).then(()=> alert('Copied result to clipboard.'), ()=> alert('Copy failed.'));
+  }
+
+  // theme toggle (visual only)
+  function toggleTheme(){
+    const s = document.getElementById('darkSwitch');
+    s.classList.toggle('on');
+    // we keep simple — we don't change colors deeply, just flip a small knob for premium feel
+    // if you want a full light/dark theme, I can add localStorage and alternate variables.
+  }
+
+  // auto open ohm as default
+  showCalculator('ohm');
+</script>
 
 </body>
 </html>
-
-   
