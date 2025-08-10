@@ -1,44 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>EEE Buddy - Calculators</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEE Buddy - Modern UI</title>
     <style>
+        /* Background gradient */
         body {
-            font-family: Arial;
-            background-color: #f1f1f1;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            color: #fff;
             text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            padding: 0;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 2.2rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        /* Glass effect container */
         .container {
-            background-color: white;
-            width: 350px;
-            padding: 30px;
-            margin: auto;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-        input, button {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        /* Buttons with gradient */
         button {
-            background-color: #4CAF50;
-            color: white;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            border: none;
+            color: #fff;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
         }
+
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(45deg, #ee0979, #ff6a00);
+        }
+
         .hidden {
             display: none;
+        }
+
+        h3 {
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 8px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
+    <h1>⚡ EEE Buddy - Pro Edition ⚡</h1>
+
+    <!-- Home Menu -->
     <div class="container" id="home">
-        <h1>EEE Buddy ⚡</h1>
         <h3>Select a Calculator</h3>
         <button onclick="showCalculator('ohm')">Ohm's Law Calculator</button>
         <button onclick="showCalculator('motor')">Motor Efficiency Calculator</button>
@@ -48,7 +111,7 @@
 
     <!-- Ohm's Law Calculator -->
     <div class="container hidden" id="ohmCalc">
-        <h2>Ohm's Law Calculator</h2>
+        <h2>Ohm's Law</h2>
         <label>Voltage (V):</label>
         <input type="number" id="voltage">
         <label>Current (I):</label>
@@ -64,7 +127,7 @@
 
     <!-- Motor Efficiency Calculator -->
     <div class="container hidden" id="motorCalc">
-        <h2>Motor Efficiency Calculator</h2>
+        <h2>Motor Efficiency</h2>
         <label>Output Power (W):</label>
         <input type="number" id="outputPower">
         <label>Input Power (W):</label>
@@ -76,8 +139,7 @@
 
     <!-- KVL Calculator -->
     <div class="container hidden" id="kvlCalc">
-        <h2>KVL Calculator</h2>
-        <p>Enter voltages in the loop (positive for sources, negative for drops)</p>
+        <h2>KVL Check</h2>
         <label>Voltage 1 (V):</label>
         <input type="number" id="kvlV1">
         <label>Voltage 2 (V):</label>
@@ -91,8 +153,7 @@
 
     <!-- KCL Calculator -->
     <div class="container hidden" id="kclCalc">
-        <h2>KCL Calculator</h2>
-        <p>Enter currents at a node (positive for entering, negative for leaving)</p>
+        <h2>KCL Check</h2>
         <label>Current 1 (A):</label>
         <input type="number" id="kclI1">
         <label>Current 2 (A):</label>
