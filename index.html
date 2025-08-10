@@ -1,238 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EEE Buddy - Modern UI</title>
-    <style>
-        /* Background gradient */
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite;
-            color: #fff;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EEE Buddy - Pro Glass Edition</title>
+<style>
+    /* Background Image */
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: url('background.jpg') no-repeat center center/cover;
+        background-attachment: fixed;
+        color: #fff;
+        text-align: center;
+    }
+    /* Dark overlay for readability */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: -1;
+    }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    /* Page Heading */
+    header {
+        padding: 20px;
+        text-shadow: 0px 0px 10px #00ffe5;
+    }
+    h1 {
+        font-size: 2rem;
+        margin: 0;
+    }
+    .subtitle {
+        font-size: 1rem;
+        color: #ccefff;
+        margin-top: 5px;
+    }
 
-        h1 {
-            margin-top: 20px;
-            font-size: 2.2rem;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-        }
+    /* Glassmorphic Cards */
+    .card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 20px auto;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 0 15px rgba(0,255,255,0.2);
+        animation: glow 3s infinite alternate;
+    }
 
-        /* Glass effect container */
-        .container {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            width: 90%;
-            max-width: 400px;
-            margin: 30px auto;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            animation: fadeIn 0.8s ease;
-        }
+    @keyframes glow {
+        from { box-shadow: 0 0 15px rgba(0,255,255,0.3); }
+        to { box-shadow: 0 0 25px rgba(255,255,0,0.5); }
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #ffeb99;
+    }
+    input, select {
+        width: 90%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+    }
 
-        label {
-            font-weight: bold;
-            display: block;
-            text-align: left;
-            margin-top: 10px;
-        }
+    /* Buttons */
+    button {
+        background: linear-gradient(90deg, #00ffdd, #0088ff);
+        border: none;
+        color: #000;
+        padding: 10px;
+        margin-top: 15px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 45%;
+        transition: 0.3s;
+    }
+    button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(90deg, #ffeb3b, #ff9800);
+    }
 
-        input {
-            width: 95%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 8px;
-            border: none;
-            font-size: 1rem;
-        }
+    /* Result Box */
+    .resultBox {
+        margin-top: 15px;
+        background: rgba(0,0,0,0.4);
+        padding: 10px;
+        border-radius: 10px;
+        color: #aef9ff;
+    }
 
-        /* Buttons with gradient */
-        button {
-            background: linear-gradient(45deg, #ff6a00, #ee0979);
-            border: none;
-            color: #fff;
-            padding: 12px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            background: linear-gradient(45deg, #ee0979, #ff6a00);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        h3 {
-            margin-top: 15px;
-            background: rgba(0, 0, 0, 0.25);
-            padding: 8px;
-            border-radius: 8px;
-        }
-    </style>
+    .hidden { display: none; }
+</style>
 </head>
 <body>
 
-    <h1>⚡ EEE Buddy - Pro Edition ⚡</h1>
+<header>
+    <h1>⚡ EEE Buddy - Glass Edition ⚡</h1>
+    <div class="subtitle">Ohm’s Law • Motor Efficiency • KVL • KCL</div>
+</header>
 
-    <!-- Home Menu -->
-    <div class="container" id="home">
-        <h3>Select a Calculator</h3>
-        <button onclick="showCalculator('ohm')">Ohm's Law Calculator</button>
-        <button onclick="showCalculator('motor')">Motor Efficiency Calculator</button>
-        <button onclick="showCalculator('kvl')">KVL Calculator</button>
-        <button onclick="showCalculator('kcl')">KCL Calculator</button>
+<!-- Home -->
+<div class="card" id="home">
+    <h2>Select Calculator</h2>
+    <button onclick="show('ohm')">Ohm's Law</button>
+    <button onclick="show('motor')">Motor Efficiency</button>
+    <button onclick="show('kvl')">KVL</button>
+    <button onclick="show('kcl')">KCL</button>
+</div>
+
+<!-- Ohm's Law -->
+<div class="card hidden" id="ohmCard">
+    <h2>Ohm's Law</h2>
+    <label>Voltage (V)</label><input id="voltage" type="number">
+    <label>Current (A)</label><input id="current" type="number">
+    <label>Resistance (Ω)</label><input id="resistance" type="number">
+    <label>Power (W)</label><input id="power" type="number">
+    <div>
+        <button onclick="calcOhm()">Calculate</button>
+        <button onclick="home()">Back</button>
     </div>
+    <div id="ohmRes" class="resultBox"></div>
+</div>
 
-    <!-- Ohm's Law Calculator -->
-    <div class="container hidden" id="ohmCalc">
-        <h2>Ohm's Law</h2>
-        <label>Voltage (V):</label>
-        <input type="number" id="voltage">
-        <label>Current (I):</label>
-        <input type="number" id="current">
-        <label>Resistance (R):</label>
-        <input type="number" id="resistance">
-        <label>Power (P):</label>
-        <input type="number" id="power">
-        <button onclick="calculateOhm()">Calculate</button>
-        <button onclick="goHome()">Back</button>
-        <h3 id="ohmResult"></h3>
+<!-- Motor Efficiency -->
+<div class="card hidden" id="motorCard">
+    <h2>Motor Efficiency</h2>
+    <label>Rated Power (kW)</label><input id="mrated" type="number">
+    <label>Rated Speed (RPM)</label><input id="nrated" type="number">
+    <label>Actual Speed (RPM)</label><input id="nactual" type="number">
+    <label>Input Voltage (V)</label><input id="vin" type="number">
+    <label>Input Current (A)</label><input id="iin" type="number">
+    <label>Power Factor</label><input id="pf" type="number" placeholder="0.85">
+    <div>
+        <button onclick="calcMotor()">Calculate</button>
+        <button onclick="home()">Back</button>
     </div>
+    <div id="motorRes" class="resultBox"></div>
+</div>
 
-    <!-- Motor Efficiency Calculator -->
-    <div class="container hidden" id="motorCalc">
-        <h2>Motor Efficiency</h2>
-        <label>Output Power (W):</label>
-        <input type="number" id="outputPower">
-        <label>Input Power (W):</label>
-        <input type="number" id="inputPower">
-        <button onclick="calculateEfficiency()">Calculate</button>
-        <button onclick="goHome()">Back</button>
-        <h3 id="motorResult"></h3>
+<!-- KVL -->
+<div class="card hidden" id="kvlCard">
+    <h2>KVL Check</h2>
+    <label>Voltage 1 (V)</label><input id="kvl1" type="number">
+    <label>Voltage 2 (V)</label><input id="kvl2" type="number">
+    <label>Voltage 3 (V)</label><input id="kvl3" type="number">
+    <div>
+        <button onclick="calcKVL()">Check</button>
+        <button onclick="home()">Back</button>
     </div>
+    <div id="kvlRes" class="resultBox"></div>
+</div>
 
-    <!-- KVL Calculator -->
-    <div class="container hidden" id="kvlCalc">
-        <h2>KVL Check</h2>
-        <label>Voltage 1 (V):</label>
-        <input type="number" id="kvlV1">
-        <label>Voltage 2 (V):</label>
-        <input type="number" id="kvlV2">
-        <label>Voltage 3 (V):</label>
-        <input type="number" id="kvlV3">
-        <button onclick="calculateKVL()">Check KVL</button>
-        <button onclick="goHome()">Back</button>
-        <h3 id="kvlResult"></h3>
+<!-- KCL -->
+<div class="card hidden" id="kclCard">
+    <h2>KCL Check</h2>
+    <label>Current 1 (A)</label><input id="kcl1" type="number">
+    <label>Current 2 (A)</label><input id="kcl2" type="number">
+    <label>Current 3 (A)</label><input id="kcl3" type="number">
+    <div>
+        <button onclick="calcKCL()">Check</button>
+        <button onclick="home()">Back</button>
     </div>
+    <div id="kclRes" class="resultBox"></div>
+</div>
 
-    <!-- KCL Calculator -->
-    <div class="container hidden" id="kclCalc">
-        <h2>KCL Check</h2>
-        <label>Current 1 (A):</label>
-        <input type="number" id="kclI1">
-        <label>Current 2 (A):</label>
-        <input type="number" id="kclI2">
-        <label>Current 3 (A):</label>
-        <input type="number" id="kclI3">
-        <button onclick="calculateKCL()">Check KCL</button>
-        <button onclick="goHome()">Back</button>
-        <h3 id="kclResult"></h3>
-    </div>
+<script>
+function show(type) {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    document.getElementById(type + 'Card').classList.remove('hidden');
+}
+function home() {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    document.getElementById('home').classList.remove('hidden');
+}
 
-    <script>
-        function showCalculator(type) {
-            document.getElementById('home').classList.add('hidden');
-            document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
-            if (type === 'ohm') document.getElementById('ohmCalc').classList.remove('hidden');
-            if (type === 'motor') document.getElementById('motorCalc').classList.remove('hidden');
-            if (type === 'kvl') document.getElementById('kvlCalc').classList.remove('hidden');
-            if (type === 'kcl') document.getElementById('kclCalc').classList.remove('hidden');
-        }
+function calcOhm() {
+    let V = parseFloat(document.getElementById("voltage").value);
+    let I = parseFloat(document.getElementById("current").value);
+    let R = parseFloat(document.getElementById("resistance").value);
+    let P = parseFloat(document.getElementById("power").value);
+    if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
+    else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
+    else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
+    else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
+    else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
+    else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
+    else { alert("Enter at least two values."); return; }
+    document.getElementById("ohmRes").innerHTML =
+        `V: ${V.toFixed(2)} V<br>I: ${I.toFixed(2)} A<br>R: ${R.toFixed(2)} Ω<br>P: ${P.toFixed(2)} W`;
+}
 
-        function goHome() {
-            document.querySelectorAll('.container').forEach(div => div.classList.add('hidden'));
-            document.getElementById('home').classList.remove('hidden');
-        }
+function calcMotor() {
+    let Pr = parseFloat(document.getElementById("mrated").value);
+    let Nr = parseFloat(document.getElementById("nrated").value);
+    let N = parseFloat(document.getElementById("nactual").value);
+    let Vin = parseFloat(document.getElementById("vin").value);
+    let Iin = parseFloat(document.getElementById("iin").value);
+    let pf = parseFloat(document.getElementById("pf").value) || 0.85;
+    if (isNaN(Pr) || isNaN(Nr) || isNaN(N)) {
+        alert("Enter rated power, rated speed, and actual speed.");
+        return;
+    }
+    let Pout = Pr * (N / Nr);
+    let Pin = (Vin && Iin) ? (Vin * Iin * pf) / 1000 : Pr / 0.88;
+    let eff = (Pout / Pin) * 100;
+    document.getElementById("motorRes").innerHTML =
+        `Output Power: ${Pout.toFixed(2)} kW<br>Input Power: ${Pin.toFixed(2)} kW<br>Efficiency: ${eff.toFixed(2)} %`;
+}
 
-        function calculateOhm() {
-            let V = parseFloat(document.getElementById("voltage").value);
-            let I = parseFloat(document.getElementById("current").value);
-            let R = parseFloat(document.getElementById("resistance").value);
-            let P = parseFloat(document.getElementById("power").value);
+function calcKVL() {
+    let sum = (parseFloat(document.getElementById("kvl1").value) || 0) +
+              (parseFloat(document.getElementById("kvl2").value) || 0) +
+              (parseFloat(document.getElementById("kvl3").value) || 0);
+    document.getElementById("kvlRes").innerHTML = (Math.abs(sum) < 1e-3)
+        ? "✅ KVL holds (sum ≈ 0)" : `❌ KVL does not hold (sum = ${sum.toFixed(2)} V)`;
+}
 
-            if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
-            else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
-            else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
-            else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
-            else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
-            else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
-            else { alert("Enter at least two values."); return; }
-
-            document.getElementById("ohmResult").innerHTML =
-                `V: ${V.toFixed(2)} V<br>I: ${I.toFixed(2)} A<br>R: ${R.toFixed(2)} Ω<br>P: ${P.toFixed(2)} W`;
-        }
-
-        function calculateEfficiency() {
-            let output = parseFloat(document.getElementById("outputPower").value);
-            let input = parseFloat(document.getElementById("inputPower").value);
-            if (isNaN(output) || isNaN(input) || input === 0) {
-                alert("Enter valid output & input power values.");
-                return;
-            }
-            let efficiency = (output / input) * 100;
-            document.getElementById("motorResult").innerHTML = `Efficiency: ${efficiency.toFixed(2)} %`;
-        }
-
-        function calculateKVL() {
-            let v1 = parseFloat(document.getElementById("kvlV1").value) || 0;
-            let v2 = parseFloat(document.getElementById("kvlV2").value) || 0;
-            let v3 = parseFloat(document.getElementById("kvlV3").value) || 0;
-            let sum = v1 + v2 + v3;
-            if (Math.abs(sum) < 0.0001) {
-                document.getElementById("kvlResult").innerHTML = "✅ KVL holds (Sum of voltages = 0)";
-            } else {
-                document.getElementById("kvlResult").innerHTML = `❌ KVL does not hold (Sum = ${sum.toFixed(2)} V)`;
-            }
-        }
-
-        function calculateKCL() {
-            let i1 = parseFloat(document.getElementById("kclI1").value) || 0;
-            let i2 = parseFloat(document.getElementById("kclI2").value) || 0;
-            let i3 = parseFloat(document.getElementById("kclI3").value) || 0;
-            let sum = i1 + i2 + i3;
-            if (Math.abs(sum) < 0.0001) {
-                document.getElementById("kclResult").innerHTML = "✅ KCL holds (Sum of currents = 0)";
-            } else {
-                document.getElementById("kclResult").innerHTML = `❌ KCL does not hold (Sum = ${sum.toFixed(2)} A)`;
-            }
-        }
-    </script>
-
+function calcKCL() {
+    let sum = (parseFloat(document.getElementById("kcl1").value) || 0) +
+              (parseFloat(document.getElementById("kcl2").value) || 0) +
+              (parseFloat(document.getElementById("kcl3").value) || 0);
+    document.getElementById("kclRes").innerHTML = (Math.abs(sum) < 1e-3)
+        ? "✅ KCL holds (sum ≈ 0)" : `❌ KCL does not hold (sum = ${sum.toFixed(2)} A)`;
+}
+</script>
 </body>
 </html>
