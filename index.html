@@ -13,20 +13,14 @@
     text-align: center;
   }
 
-  header {
-    padding: 20px;
-  }
+  header { padding: 20px; }
   header h1 {
     font-size: 2rem;
     color: #00eaff;
     text-shadow: 0px 0px 15px rgba(0,234,255,0.7);
   }
-  .sub {
-    font-size: 1rem;
-    opacity: 0.8;
-  }
+  .sub { font-size: 1rem; opacity: 0.8; }
 
-  /* ===== MENU ===== */
   .menu {
     display: flex;
     flex-wrap: wrap;
@@ -62,74 +56,40 @@
     box-shadow: 0 0 25px rgba(0,234,255,0.8);
   }
 
-  /* ===== ICON ANIMATIONS ===== */
-  .icon {
-    font-size: 2.5rem;
-  }
-  /* ⚡ Glow animation */
-  .glow {
-    animation: glowPulse 1s infinite alternate;
-    color: #ffea00;
-  }
+  .icon { font-size: 2.5rem; }
+  .glow { animation: glowPulse 1s infinite alternate; color: #ffea00; }
   @keyframes glowPulse {
     from { text-shadow: 0 0 5px yellow, 0 0 10px orange; }
     to { text-shadow: 0 0 15px yellow, 0 0 25px orange; }
   }
-
-  /* 🔄 Rotating transformer */
-  .rotate {
-    animation: rotateAnim 2s linear infinite;
-    color: #00eaff;
-  }
-  @keyframes rotateAnim {
-    100% { transform: rotate(360deg); }
-  }
-
-  /* ⚙️ Slow gear spin */
-  .spin {
-    animation: spinGear 5s linear infinite;
-    color: #ff9b4b;
-  }
-  @keyframes spinGear {
-    100% { transform: rotate(360deg); }
-  }
-
-  /* 🔋 Battery charging */
-  .charge {
-    animation: chargeAnim 1.5s infinite alternate;
-    color: #00ff7f;
-  }
+  .rotate { animation: rotateAnim 2s linear infinite; color: #00eaff; }
+  @keyframes rotateAnim { 100% { transform: rotate(360deg); } }
+  .spin { animation: spinGear 5s linear infinite; color: #ff9b4b; }
+  @keyframes spinGear { 100% { transform: rotate(360deg); } }
+  .charge { animation: chargeAnim 1.5s infinite alternate; color: #00ff7f; }
   @keyframes chargeAnim {
     from { opacity: 0.6; }
     to { opacity: 1; text-shadow: 0 0 15px #00ff7f; }
   }
+  @keyframes fadeSlideIn { to { opacity: 1; transform: translateY(0); } }
 
-  /* ===== Animations ===== */
-  @keyframes fadeSlideIn {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== Calculator Cards ===== */
   .card {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 15px;
     padding: 20px;
     max-width: 400px;
-    margin: auto;
+    margin: 20px auto;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
     display: none;
     opacity: 0;
     animation: fadeIn 0.6s ease forwards;
+    text-align: left;
   }
-  label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-  }
+  label { display: block; margin-top: 10px; font-weight: bold; }
   input {
-    width: 90%;
+    width: 95%;
     padding: 10px;
     margin-top: 5px;
     border-radius: 8px;
@@ -137,13 +97,10 @@
     background: rgba(255,255,255,0.15);
     color: #fff;
   }
-  input::placeholder {
-    color: rgba(255,255,255,0.6);
-  }
-  .controls {
-    margin-top: 15px;
-  }
+  input::placeholder { color: rgba(255,255,255,0.6); }
+  .controls { margin-top: 15px; display: flex; gap: 10px; }
   button.calc-btn {
+    flex: 1;
     padding: 10px 15px;
     background: linear-gradient(90deg, #ffd36b, #ff9b4b);
     border: none;
@@ -151,15 +108,18 @@
     font-weight: bold;
     cursor: pointer;
   }
+  .secondary {
+    background: linear-gradient(90deg, #00eaff, #0077ff);
+    color: black;
+  }
   .result {
     margin-top: 15px;
     padding: 10px;
     background: rgba(0,0,0,0.3);
     border-radius: 8px;
+    text-align: center;
   }
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { to { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -170,25 +130,64 @@
 </header>
 
 <div class="menu">
-  <button onclick="showCalc('ohm')">
-    <div class="icon glow">⚡</div>
-    Ohm's Law
-  </button>
-  <button onclick="showCalc('xfmr')">
-    <div class="icon rotate">🔄</div>
-    Transformer
-  </button>
-  <button onclick="showCalc('three')">
-    <div class="icon spin">⚙️</div>
-    3-Phase Power
-  </button>
-  <button onclick="showCalc('battery')">
-    <div class="icon charge">🔋</div>
-    Battery Backup
-  </button>
+  <button onclick="showCalc('ohm')"><div class="icon glow">⚡</div>Ohm's Law</button>
+  <button onclick="showCalc('xfmr')"><div class="icon rotate">🔄</div>Transformer</button>
+  <button onclick="showCalc('three')"><div class="icon spin">⚙️</div>3-Phase Power</button>
+  <button onclick="showCalc('battery')"><div class="icon charge">🔋</div>Battery Backup</button>
 </div>
 
-<!-- Calculator cards remain same as your working code -->
+<!-- OHM -->
+<div id="ohm" class="card">
+  <h2>Ohm's Law</h2>
+  <label>Voltage (V)</label><input id="ohmV" type="number" step="any">
+  <label>Current (A)</label><input id="ohmI" type="number" step="any">
+  <label>Resistance (Ω)</label><input id="ohmR" type="number" step="any">
+  <label>Power (W)</label><input id="ohmP" type="number" step="any">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcOhm()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearOhm()">Clear</button>
+  </div>
+  <div id="ohmRes" class="result"></div>
+</div>
+
+<!-- TRANSFORMER -->
+<div id="xfmr" class="card">
+  <h2>Transformer</h2>
+  <label>Primary Voltage (Vp)</label><input id="tp_vp" type="number" step="any">
+  <label>Primary Current (Ip)</label><input id="tp_ip" type="number" step="any">
+  <label>Turns Ratio (Np/Ns)</label><input id="tp_ratio" type="number" step="any" placeholder="Default 2">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcXfmr()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearXfmr()">Clear</button>
+  </div>
+  <div id="tpRes" class="result"></div>
+</div>
+
+<!-- 3 PHASE -->
+<div id="three" class="card">
+  <h2>3-Phase Power</h2>
+  <label>Line Voltage (V)</label><input id="t_vl" type="number" step="any">
+  <label>Line Current (A)</label><input id="t_il" type="number" step="any">
+  <label>Power Factor</label><input id="t_pf" type="number" step="any" placeholder="0.8">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcThree()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearThree()">Clear</button>
+  </div>
+  <div id="threeRes" class="result"></div>
+</div>
+
+<!-- BATTERY -->
+<div id="battery" class="card">
+  <h2>Battery Backup</h2>
+  <label>Battery Capacity (Ah)</label><input id="b_ah" type="number" step="any">
+  <label>Voltage (V)</label><input id="b_v" type="number" step="any">
+  <label>Load (W)</label><input id="b_load" type="number" step="any">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcBattery()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearBattery()">Clear</button>
+  </div>
+  <div id="batRes" class="result"></div>
+</div>
 
 <script>
 function showCalc(id) {
@@ -197,6 +196,71 @@ function showCalc(id) {
   card.style.display = 'block';
   card.style.animation = 'fadeIn 0.6s ease forwards';
 }
+
+// OHM
+function calcOhm(){
+  let V = parseFloat(document.getElementById('ohmV').value);
+  let I = parseFloat(document.getElementById('ohmI').value);
+  let R = parseFloat(document.getElementById('ohmR').value);
+  let P = parseFloat(document.getElementById('ohmP').value);
+  const provided = [V,I,R,P].filter(x => !isNaN(x)).length;
+  if (provided < 2) { alert('Enter at least two values'); return; }
+  if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
+  else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
+  else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
+  else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
+  else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
+  else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
+  document.getElementById('ohmRes').innerHTML =
+    `V=${V.toFixed(2)}V<br>I=${I.toFixed(2)}A<br>R=${R.toFixed(2)}Ω<br>P=${P.toFixed(2)}W`;
+}
+function clearOhm(){ ['ohmV','ohmI','ohmR','ohmP'].forEach(id=>document.getElementById(id).value=''); document.getElementById('ohmRes').innerHTML=''; }
+
+// TRANSFORMER
+function calcXfmr(){
+  const Vp = parseFloat(document.getElementById('tp_vp').value);
+  const Ip = parseFloat(document.getElementById('tp_ip').value);
+  let ratio = parseFloat(document.getElementById('tp_ratio').value);
+  if (isNaN(ratio) || ratio <= 0) ratio = 2;
+  if (isNaN(Vp) || isNaN(Ip)) { alert('Enter primary V and I'); return; }
+  const Vs = Vp / ratio;
+  const Is = Ip * ratio;
+  document.getElementById('tpRes').innerHTML =
+    `Vs=${Vs.toFixed(2)}V<br>Is=${Is.toFixed(2)}A<br>Turns Ratio=${ratio}`;
+}
+function clearXfmr(){ ['tp_vp','tp_ip','tp_ratio'].forEach(id=>document.getElementById(id).value=''); document.getElementById('tpRes').innerHTML=''; }
+
+// 3 PHASE
+function calcThree(){
+  const Vl = parseFloat(document.getElementById('t_vl').value);
+  const Il = parseFloat(document.getElementById('t_il').value);
+  let pf = parseFloat(document.getElementById('t_pf').value);
+  if (isNaN(pf) || pf <= 0) pf = 1;
+  if (isNaN(Vl) || isNaN(Il)) { alert('Enter V and I'); return; }
+  const S_va = Math.SQRT3 * Vl * Il;
+  const P_kw = (S_va * pf) / 1000;
+  document.getElementById('threeRes').innerHTML =
+    `S=${S_va.toFixed(2)}VA<br>P=${P_kw.toFixed(3)}kW<br>pf=${pf}`;
+}
+function clearThree(){ ['t_vl','t_il','t_pf'].forEach(id=>document.getElementById(id).value=''); document.getElementById('threeRes').innerHTML=''; }
+
+// BATTERY
+function calcBattery(){
+  const Ah = parseFloat(document.getElementById('b_ah').value);
+  const V = parseFloat(document.getElementById('b_v').value);
+  const loadW = parseFloat(document.getElementById('b_load').value);
+  if (isNaN(Ah) || isNaN(V) || isNaN(loadW)) { alert('Enter Ah, Voltage, and Load'); return; }
+  const dod = 0.8; 
+  const eff = 0.9; 
+  const totalWh = Ah * V;
+  const usableWh = totalWh * dod * eff;
+  const hours = usableWh / loadW;
+  let hr = Math.floor(hours);
+  let min = Math.round((hours - hr) * 60);
+  document.getElementById('batRes').innerHTML =
+    `Backup Time ≈ ${hr}h ${min}m<br>(Usable Energy=${usableWh.toFixed(1)}Wh)`;
+}
+function clearBattery(){ ['b_ah','b_v','b_load'].forEach(id=>document.getElementById(id).value=''); document.getElementById('batRes').innerHTML=''; }
 </script>
 
 </body>
