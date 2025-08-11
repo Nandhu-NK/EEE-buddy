@@ -11,252 +11,139 @@
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: #fff;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
     min-height: 100vh;
+  }
+
+  header {
+    text-align: center;
+    padding: 20px;
+  }
+  header h1 {
+    font-size: 2rem;
+    color: #00eaff;
+    text-shadow: 0px 0px 15px rgba(0,234,255,0.7);
+  }
+  .sub {
+    font-size: 1rem;
+    opacity: 0.8;
+  }
+
+  .menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
     padding: 20px;
   }
 
-  h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    color: #00eaff;
-    text-shadow: 0px 0px 20px rgba(0,234,255,0.7);
-  }
-
-  .menu, .calculator {
-    max-width: 400px;
-    width: 100%;
+  .card {
     background: rgba(255, 255, 255, 0.08);
-    padding: 25px;
     border-radius: 15px;
+    padding: 20px;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  .menu button {
-    width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    background: linear-gradient(90deg, #00eaff, #0077ff);
-    color: #000;
-    box-shadow: 0 0 15px rgba(0,234,255,0.5);
-    transition: transform 0.2s ease;
-  }
-  .menu button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(0,234,255,0.8);
-  }
-
-  label {
-    font-weight: bold;
-    display: block;
-    margin-top: 8px;
-  }
-  input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    margin-top: 4px;
-    font-size: 1rem;
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    outline: none;
-  }
-  input::placeholder {
-    color: rgba(255,255,255,0.6);
-  }
-
-  .controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-  }
-  button.calc-btn {
-    padding: 10px 15px;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: linear-gradient(90deg, #ffd36b, #ff9b4b);
-    box-shadow: 0 0 10px rgba(255,211,107,0.5);
-    transition: transform 0.2s ease;
-  }
-  button.calc-btn:hover {
-    transform: scale(1.05);
-  }
-
-  .result {
-    margin-top: 15px;
-    padding: 12px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
     text-align: center;
-    font-weight: bold;
-    color: #00ffea;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0px 6px 30px rgba(0,234,255,0.3);
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  svg {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+
+  /* Animations */
+  .icon-bolt {
+    animation: glowBolt 1s infinite alternate;
+  }
+  @keyframes glowBolt {
+    0% { fill: #ffeb3b; }
+    100% { fill: #ff9800; }
+  }
+
+  .icon-transformer {
+    animation: rotateCoil 2s linear infinite;
+  }
+  @keyframes rotateCoil {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+  }
+
+  .icon-gear {
+    animation: spinGear 3s linear infinite;
+  }
+  @keyframes spinGear {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+  }
+
+  .icon-battery {
+    animation: chargeBattery 1.5s infinite alternate;
+  }
+  @keyframes chargeBattery {
+    0% { fill: #ff1744; }
+    100% { fill: #00e676; }
   }
 </style>
 </head>
 <body>
 
-<div class="menu" id="menu">
-  <h1>⚡ EEE Buddy</h1>
-  <p style="text-align:center; opacity:0.8;">Select a Calculator</p>
-  <button onclick="showCalc('ohm')">Ohm's Law</button>
-  <button onclick="showCalc('transformer')">Transformer</button>
-  <button onclick="showCalc('threephase')">3-Phase Power</button>
-  <button onclick="showCalc('battery')">Battery Backup</button>
-</div>
+<header>
+  <h1>⚡ EEE Buddy — Multi-Tool</h1>
+  <div class="sub">Choose your calculator</div>
+</header>
 
-<!-- Calculators -->
-<div class="calculator" id="ohm" style="display:none;">
-  <h1>Ohm's Law</h1>
-  <label>Voltage (V)</label>
-  <input id="ohmV" type="number" step="any">
-  <label>Current (A)</label>
-  <input id="ohmI" type="number" step="any">
-  <label>Resistance (Ω)</label>
-  <input id="ohmR" type="number" step="any">
-  <label>Power (W)</label>
-  <input id="ohmP" type="number" step="any">
-  <div class="controls">
-    <button class="calc-btn" onclick="calcOhm()">Calculate</button>
-    <button class="calc-btn" onclick="goBack()">Back</button>
+<div class="menu">
+  
+  <!-- Ohm's Law -->
+  <div class="card" onclick="alert('Load Ohm’s Law Calculator')">
+    <svg class="icon-bolt" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M7 2v11h3v9l7-12h-4l4-8z"/>
+    </svg>
+    <h3>Ohm's Law</h3>
+    <p>Calculate Voltage, Current, Resistance, Power</p>
   </div>
-  <div id="ohmRes" class="result"></div>
-</div>
 
-<div class="calculator" id="transformer" style="display:none;">
-  <h1>Transformer</h1>
-  <label>Primary Voltage (Vp)</label>
-  <input id="tp_vp" type="number" step="any">
-  <label>Primary Current (Ip)</label>
-  <input id="tp_ip" type="number" step="any">
-  <label>Turns Ratio (Np/Ns)</label>
-  <input id="tp_ratio" type="number" step="any" placeholder="Default: 2">
-  <div class="controls">
-    <button class="calc-btn" onclick="calcXfmr()">Calculate</button>
-    <button class="calc-btn" onclick="goBack()">Back</button>
+  <!-- Transformer -->
+  <div class="card" onclick="alert('Load Transformer Calculator')">
+    <svg class="icon-transformer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="10" stroke="#00eaff" stroke-width="4" fill="none"/>
+      <circle cx="32" cy="32" r="20" stroke="#ffd36b" stroke-width="4" fill="none"/>
+    </svg>
+    <h3>Transformer</h3>
+    <p>Find secondary voltage & current</p>
   </div>
-  <div id="tpRes" class="result"></div>
-</div>
 
-<div class="calculator" id="threephase" style="display:none;">
-  <h1>3-Phase Power</h1>
-  <label>Line Voltage (V)</label>
-  <input id="t_vl" type="number" step="any">
-  <label>Line Current (A)</label>
-  <input id="t_il" type="number" step="any">
-  <label>Power Factor</label>
-  <input id="t_pf" type="number" step="any" placeholder="0.8">
-  <div class="controls">
-    <button class="calc-btn" onclick="calcThree()">Calculate</button>
-    <button class="calc-btn" onclick="goBack()">Back</button>
+  <!-- 3-Phase -->
+  <div class="card" onclick="alert('Load 3-Phase Power Calculator')">
+    <svg class="icon-gear" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path fill="#ffd36b" d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+      <path fill="#ffd36b" d="M19.43 12.98c.04-.32.07-.65.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 0 0 .12-.65l-2-3.46a.5.5 0 0 0-.61-.22l-2.49 1a6.91 6.91 0 0 0-1.69-.98l-.38-2.65A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.38 2.65c-.63.24-1.21.56-1.69.98l-2.49-1a.5.5 0 0 0-.61.22l-2 3.46a.5.5 0 0 0 .12.65l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65a.5.5 0 0 0-.12.65l2 3.46c.14.24.42.33.68.22l2.49-1c.48.42 1.06.74 1.69.98l.38 2.65c.04.26.25.42.5.42h4c.25 0 .46-.16.5-.42l.38-2.65c.63-.24 1.21-.56 1.69-.98l2.49 1c.26.11.54.02.68-.22l2-3.46a.5.5 0 0 0-.12-.65l-2.11-1.65z"/>
+    </svg>
+    <h3>3-Phase Power</h3>
+    <p>Calculate kW, kVA, PF</p>
   </div>
-  <div id="threeRes" class="result"></div>
-</div>
 
-<div class="calculator" id="battery" style="display:none;">
-  <h1>Battery Backup</h1>
-  <label>Battery Capacity (Ah)</label>
-  <input id="b_ah" type="number" step="any">
-  <label>Voltage (V)</label>
-  <input id="b_v" type="number" step="any">
-  <label>Load (W)</label>
-  <input id="b_load" type="number" step="any">
-  <div class="controls">
-    <button class="calc-btn" onclick="calcBattery()">Calculate</button>
-    <button class="calc-btn" onclick="goBack()">Back</button>
+  <!-- Battery -->
+  <div class="card" onclick="alert('Load Battery Backup Calculator')">
+    <svg class="icon-battery" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <rect x="2" y="7" width="18" height="10" rx="2" ry="2" stroke="#00eaff" stroke-width="2" fill="none"/>
+      <rect x="20" y="10" width="2" height="4" fill="#00eaff"/>
+    </svg>
+    <h3>Battery Backup</h3>
+    <p>Find backup duration from capacity & load</p>
   </div>
-  <div id="batRes" class="result"></div>
+
 </div>
-
-<script>
-function showCalc(id) {
-  document.getElementById('menu').style.display = 'none';
-  document.getElementById(id).style.display = 'block';
-}
-function goBack() {
-  document.querySelectorAll('.calculator').forEach(c => c.style.display = 'none');
-  document.getElementById('menu').style.display = 'block';
-}
-
-// Ohm's Law
-function calcOhm(){
-  let V = parseFloat(document.getElementById('ohmV').value);
-  let I = parseFloat(document.getElementById('ohmI').value);
-  let R = parseFloat(document.getElementById('ohmR').value);
-  let P = parseFloat(document.getElementById('ohmP').value);
-  const provided = [V,I,R,P].filter(x => !isNaN(x)).length;
-  if (provided < 2) { alert('Enter at least two values'); return; }
-  if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
-  else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
-  else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
-  else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
-  else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
-  else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
-  document.getElementById('ohmRes').innerHTML =
-    `V=${V.toFixed(2)}V<br>I=${I.toFixed(2)}A<br>R=${R.toFixed(2)}Ω<br>P=${P.toFixed(2)}W`;
-}
-
-// Transformer
-function calcXfmr(){
-  const Vp = parseFloat(document.getElementById('tp_vp').value);
-  const Ip = parseFloat(document.getElementById('tp_ip').value);
-  let ratio = parseFloat(document.getElementById('tp_ratio').value);
-  if (isNaN(ratio) || ratio <= 0) ratio = 2;
-  if (isNaN(Vp) || isNaN(Ip)) { alert('Enter primary V and I'); return; }
-  const Vs = Vp / ratio;
-  const Is = Ip * ratio;
-  document.getElementById('tpRes').innerHTML =
-    `Vs=${Vs.toFixed(2)}V<br>Is=${Is.toFixed(2)}A<br>Turns Ratio=${ratio}`;
-}
-
-// 3-Phase
-function calcThree(){
-  const Vl = parseFloat(document.getElementById('t_vl').value);
-  const Il = parseFloat(document.getElementById('t_il').value);
-  let pf = parseFloat(document.getElementById('t_pf').value);
-  if (isNaN(pf) || pf <= 0) pf = 1;
-  if (isNaN(Vl) || isNaN(Il)) { alert('Enter V and I'); return; }
-  const S_va = Math.SQRT3 * Vl * Il;
-  const P_kw = (S_va * pf) / 1000;
-  document.getElementById('threeRes').innerHTML =
-    `S=${S_va.toFixed(2)}VA<br>P=${P_kw.toFixed(3)}kW<br>pf=${pf}`;
-}
-
-// Battery
-function calcBattery(){
-  const Ah = parseFloat(document.getElementById('b_ah').value);
-  const V = parseFloat(document.getElementById('b_v').value);
-  const loadW = parseFloat(document.getElementById('b_load').value);
-  if (isNaN(Ah) || isNaN(V) || isNaN(loadW)) { alert('Enter Ah, Voltage, and Load'); return; }
-  const dod = 0.8; 
-  const eff = 0.9; 
-  const totalWh = Ah * V;
-  const usableWh = totalWh * dod * eff;
-  const hours = usableWh / loadW;
-  let hr = Math.floor(hours);
-  let min = Math.round((hours - hr) * 60);
-  document.getElementById('batRes').innerHTML =
-    `Backup Time ≈ ${hr}h ${min}m<br>(Usable Energy=${usableWh.toFixed(1)}Wh)`;
-}
-</script>
 
 </body>
 </html>
