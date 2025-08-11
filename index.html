@@ -1,66 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EEE Buddy — Multi-Tool</title>
 <style>
+  /* ===== Background ===== */
   body {
     margin: 0;
-    font-family: "Segoe UI", Roboto, Arial, sans-serif;
-    background: url('background.jpg') no-repeat center center/cover;
-    background-color: #0b1220;
-    color: #eaf6ff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  body::before {
-    content: "";
-    position: fixed; inset: 0;
-    background: rgba(3,10,25,0.6);
-    z-index: -1;
+
+  header {
+    text-align: center;
+    padding: 20px;
   }
-  header { text-align: center; padding: 28px 12px 6px; }
-  h1 { margin: 0; font-size: 1.9rem; color: #ffd36b; }
-  .sub { margin-top:6px; color:#cfefff; opacity:0.9; font-size:0.95rem; }
+  header h1 {
+    font-size: 2rem;
+    color: #00eaff;
+    text-shadow: 0px 0px 15px rgba(0,234,255,0.7);
+  }
+  .sub {
+    font-size: 1rem;
+    opacity: 0.8;
+  }
+
+  /* ===== Layout ===== */
   .wrap {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    max-width: 980px;
-    margin: 18px auto;
-    padding: 0 14px 40px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    width: 100%;
+    padding: 20px;
   }
+
+  /* ===== Card Style ===== */
   .card {
-    background: rgba(255,255,255,0.06);
-    border-radius: 14px;
-    padding: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  label { display:block; font-weight:700; color:#ffe8a3; margin-top:10px; }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 30px rgba(0,234,255,0.3);
+  }
+
+  h2 {
+    color: #ffd36b;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .small {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  /* ===== Inputs ===== */
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 8px;
+  }
   input, select {
     width: 100%;
     padding: 10px;
     border-radius: 8px;
     border: none;
-    margin-top:6px;
+    margin-top: 4px;
+    font-size: 1rem;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    outline: none;
   }
-  .controls { display:flex; gap:10px; margin-top:12px; justify-content:center; }
+  input::placeholder {
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ===== Buttons ===== */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+  }
   button {
-    padding: 10px 14px;
-    border-radius: 10px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: bold;
     border: none;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight:800;
-    background: linear-gradient(90deg,#9bf6ff,#5ad3ff);
+    background: linear-gradient(90deg, #00eaff, #0077ff);
+    color: #000;
+    box-shadow: 0 0 10px rgba(0,234,255,0.5);
+    transition: transform 0.2s ease;
+  }
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0,234,255,0.8);
   }
   .secondary {
-    background: linear-gradient(90deg,#ffd36b,#ff9b4b);
+    background: linear-gradient(90deg, #ffd36b, #ff9b4b);
+    box-shadow: 0 0 10px rgba(255,211,107,0.5);
   }
+
+  /* ===== Results ===== */
   .result {
-    margin-top:12px;
-    padding:12px;
-    border-radius:10px;
-    background: rgba(0,0,0,0.25);
-    color:#cdefff;
-    font-weight:700;
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: #00ffea;
   }
 </style>
 </head>
@@ -76,6 +140,7 @@
   <!-- OHM'S LAW -->
   <div class="card">
     <h2>Ohm's Law Calculator</h2>
+    <div class="small">Enter any two values to compute the rest.</div>
     <label>Voltage (V)</label>
     <input id="ohmV" type="number" step="any">
     <label>Current (A)</label>
@@ -144,6 +209,7 @@
 </div>
 
 <script>
+/* Same JS logic as before (from my last update) */
 function calcOhm(){
   let V = parseFloat(document.getElementById('ohmV').value);
   let I = parseFloat(document.getElementById('ohmI').value);
@@ -193,8 +259,8 @@ function calcBattery(){
   const V = parseFloat(document.getElementById('b_v').value);
   const loadW = parseFloat(document.getElementById('b_load').value);
   if (isNaN(Ah) || isNaN(V) || isNaN(loadW)) { alert('Enter Ah, Voltage, and Load'); return; }
-  const dod = 0.8; // 80%
-  const eff = 0.9; // 90%
+  const dod = 0.8; 
+  const eff = 0.9; 
   const totalWh = Ah * V;
   const usableWh = totalWh * dod * eff;
   const hours = usableWh / loadW;
