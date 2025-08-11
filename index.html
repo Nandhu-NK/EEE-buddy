@@ -36,7 +36,7 @@
     max-width: 400px;
     margin-top: 20px;
   }
-  .menu.active, .calculator.active {
+  .menu.show, .calculator.show {
     display: block;
   }
 
@@ -109,7 +109,7 @@
 </header>
 
 <!-- Main Menu -->
-<div class="menu active" id="menu">
+<div class="menu show" id="menu">
   <div class="card" onclick="showCalc('ohm')">⚡ Ohm's Law Calculator</div>
   <div class="card" onclick="showCalc('xfmr')">🔄 Transformer Calculator</div>
   <div class="card" onclick="showCalc('three')">⚙️ 3-Phase Power Calculator</div>
@@ -171,14 +171,14 @@
 
 <script>
 function showCalc(id) {
-  document.getElementById('menu').classList.remove('active');
-  document.querySelectorAll('.calculator').forEach(c => c.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.getElementById('menu').classList.remove('show');
+  document.querySelectorAll('.calculator').forEach(c => c.classList.remove('show'));
+  document.getElementById(id).classList.add('show');
 }
 
 function goMenu() {
-  document.querySelectorAll('.calculator').forEach(c => c.classList.remove('active'));
-  document.getElementById('menu').classList.add('active');
+  document.querySelectorAll('.calculator').forEach(c => c.classList.remove('show'));
+  document.getElementById('menu').classList.add('show');
 }
 
 // Ohm's Law
