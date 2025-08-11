@@ -5,28 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>EEE Buddy — Multi-Tool</title>
 <style>
-  /* Background - replace background.jpg with your image in same folder */
   body {
     margin: 0;
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background: url('background.jpg') no-repeat center center/cover;
-    background-color: #0b1220; /* fallback */
+    background-color: #0b1220;
     color: #eaf6ff;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
   body::before {
     content: "";
     position: fixed; inset: 0;
-    background: linear-gradient(180deg, rgba(3,10,25,0.6), rgba(3,10,25,0.6));
+    background: rgba(3,10,25,0.6);
     z-index: -1;
   }
-
   header { text-align: center; padding: 28px 12px 6px; }
-  h1 { margin: 0; font-size: 1.9rem; color: #ffd36b; text-shadow: 0 6px 18px rgba(0,0,0,0.6); }
+  h1 { margin: 0; font-size: 1.9rem; color: #ffd36b; }
   .sub { margin-top:6px; color:#cfefff; opacity:0.9; font-size:0.95rem; }
-
-  /* main layout */
   .wrap {
     display: grid;
     grid-template-columns: 1fr;
@@ -35,55 +29,31 @@
     margin: 18px auto;
     padding: 0 14px 40px;
   }
-
-  /* big card style */
   .card {
     background: rgba(255,255,255,0.06);
     border-radius: 14px;
     padding: 18px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.04);
   }
-
-  .row {
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content: center;
-  }
-
-  label { display:block; font-weight:700; color:#ffe8a3; margin-top:10px; text-align:left; }
+  label { display:block; font-weight:700; color:#ffe8a3; margin-top:10px; }
   input, select {
     width: 100%;
-    max-width: 320px;
-    padding: 10px 12px;
+    padding: 10px;
     border-radius: 8px;
     border: none;
-    font-size: 0.95rem;
     margin-top:6px;
   }
-
-  .controls { display:flex; gap:10px; margin-top:12px; justify-content:center; flex-wrap:wrap; }
+  .controls { display:flex; gap:10px; margin-top:12px; justify-content:center; }
   button {
     padding: 10px 14px;
     border-radius: 10px;
     border: none;
     cursor: pointer;
     font-weight:800;
-    color:#021020;
     background: linear-gradient(90deg,#9bf6ff,#5ad3ff);
-    box-shadow: 0 8px 18px rgba(90,211,255,0.12);
-    transition: transform .15s ease;
   }
-  button:hover { transform: translateY(-4px); filter:brightness(1.03); }
-
   .secondary {
     background: linear-gradient(90deg,#ffd36b,#ff9b4b);
-    color: #06121a;
   }
-
   .result {
     margin-top:12px;
     padding:12px;
@@ -91,27 +61,6 @@
     background: rgba(0,0,0,0.25);
     color:#cdefff;
     font-weight:700;
-  }
-
-  .small { font-size:0.88rem; color:#dcefff; opacity:0.9; margin-top:8px; }
-
-  /* menu */
-  .menu {
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    flex-wrap:wrap;
-    margin-top:10px;
-  }
-  .menu button { width:180px; }
-
-  @media(min-width:900px){
-    .wrap { grid-template-columns: 1fr 1fr; }
-    header { padding-top: 40px; }
-  }
-  @media(max-width:480px){
-    input, select { max-width: 100%; }
-    .menu button { width:48%; }
   }
 </style>
 </head>
@@ -124,272 +73,137 @@
 
 <div class="wrap">
 
-  <!-- OHM'S LAW (always visible first) -->
-  <div class="card" id="ohmCard">
+  <!-- OHM'S LAW -->
+  <div class="card">
     <h2>Ohm's Law Calculator</h2>
-    <div class="small">Enter any two values to compute the others (V, I, R, P).</div>
-
     <label>Voltage (V)</label>
-    <input id="ohmV" type="number" step="any" placeholder="e.g., 12">
-
+    <input id="ohmV" type="number" step="any">
     <label>Current (A)</label>
-    <input id="ohmI" type="number" step="any" placeholder="e.g., 2">
-
+    <input id="ohmI" type="number" step="any">
     <label>Resistance (Ω)</label>
-    <input id="ohmR" type="number" step="any" placeholder="e.g., 6">
-
+    <input id="ohmR" type="number" step="any">
     <label>Power (W)</label>
-    <input id="ohmP" type="number" step="any" placeholder="e.g., 24">
-
+    <input id="ohmP" type="number" step="any">
     <div class="controls">
       <button onclick="calcOhm()">Calculate</button>
       <button class="secondary" onclick="clearOhm()">Clear</button>
     </div>
-
-    <div id="ohmRes" class="result" aria-live="polite"></div>
+    <div id="ohmRes" class="result"></div>
   </div>
 
   <!-- TRANSFORMER -->
-  <div class="card" id="xfmrCard">
+  <div class="card">
     <h2>Transformer Calculator</h2>
-    <div class="small">Assumes ideal transformer unless you enter an efficiency (%)</div>
-
-    <label>Primary Voltage V<sub>p</sub> (V)</label>
-    <input id="tp_vp" type="number" step="any" placeholder="e.g., 230">
-
-    <label>Primary Current I<sub>p</sub> (A)</label>
-    <input id="tp_ip" type="number" step="any" placeholder="e.g., 2">
-
-    <label>Turns Ratio (Np / Ns)</label>
-    <input id="tp_ratio" type="number" step="any" placeholder="e.g., 2 (means Np is twice Ns)">
-
-    <label>Efficiency (%) — optional</label>
-    <input id="tp_eff" type="number" step="any" placeholder="e.g., 95">
-
+    <div class="small">Provide Primary V & I. Turns ratio defaults to 2 but can be changed.</div>
+    <label>Primary Voltage (Vp)</label>
+    <input id="tp_vp" type="number" step="any">
+    <label>Primary Current (Ip)</label>
+    <input id="tp_ip" type="number" step="any">
+    <label>Turns Ratio (Np/Ns)</label>
+    <input id="tp_ratio" type="number" step="any" placeholder="Default: 2">
     <div class="controls">
       <button onclick="calcXfmr()">Calculate</button>
       <button class="secondary" onclick="clearXfmr()">Clear</button>
     </div>
-
     <div id="tpRes" class="result"></div>
   </div>
 
-  <!-- 3-PHASE POWER -->
-  <div class="card" id="threeCard">
+  <!-- 3-PHASE -->
+  <div class="card">
     <h2>3-Phase Power Calculator</h2>
-    <div class="small">Enter line voltage (V), line current (A) and power factor (pf).</div>
-
-    <label>Line Voltage V<sub>L</sub> (V)</label>
-    <input id="t_vl" type="number" step="any" placeholder="e.g., 415">
-
-    <label>Line Current I<sub>L</sub> (A)</label>
-    <input id="t_il" type="number" step="any" placeholder="e.g., 50">
-
-    <label>Power Factor (0–1)</label>
-    <input id="t_pf" type="number" step="any" placeholder="e.g., 0.8">
-
-    <label>Connection</label>
-    <select id="t_conn">
-      <option value="star">Star (Y)</option>
-      <option value="delta">Delta (Δ)</option>
-    </select>
-
+    <label>Line Voltage (V)</label>
+    <input id="t_vl" type="number" step="any">
+    <label>Line Current (A)</label>
+    <input id="t_il" type="number" step="any">
+    <label>Power Factor</label>
+    <input id="t_pf" type="number" step="any" placeholder="0.8">
     <div class="controls">
       <button onclick="calcThree()">Calculate</button>
       <button class="secondary" onclick="clearThree()">Clear</button>
     </div>
-
     <div id="threeRes" class="result"></div>
   </div>
 
-  <!-- BATTERY BACKUP -->
-  <div class="card" id="batCard">
+  <!-- BATTERY -->
+  <div class="card">
     <h2>Battery Backup Time Calculator</h2>
-    <div class="small">Compute backup time using battery Ah, system voltage and load power.</div>
-
+    <div class="small">Just enter Battery Ah, Voltage, and Load W.</div>
     <label>Battery Capacity (Ah)</label>
-    <input id="b_ah" type="number" step="any" placeholder="e.g., 150">
-
-    <label>System Voltage (V)</label>
-    <input id="b_v" type="number" step="any" placeholder="e.g., 12 or 48">
-
+    <input id="b_ah" type="number" step="any">
+    <label>Voltage (V)</label>
+    <input id="b_v" type="number" step="any">
     <label>Load (W)</label>
-    <input id="b_load" type="number" step="any" placeholder="e.g., 200">
-
-    <label>Depth of Discharge (DoD %) — optional (default 80%)</label>
-    <input id="b_dod" type="number" step="any" placeholder="e.g., 80">
-
-    <label>Inverter Efficiency % — optional (default 90%)</label>
-    <input id="b_inv" type="number" step="any" placeholder="e.g., 90">
-
+    <input id="b_load" type="number" step="any">
     <div class="controls">
       <button onclick="calcBattery()">Calculate</button>
       <button class="secondary" onclick="clearBattery()">Clear</button>
     </div>
-
     <div id="batRes" class="result"></div>
   </div>
 
 </div>
 
 <script>
-/* ------------------ OHM ------------------ */
 function calcOhm(){
   let V = parseFloat(document.getElementById('ohmV').value);
   let I = parseFloat(document.getElementById('ohmI').value);
   let R = parseFloat(document.getElementById('ohmR').value);
   let P = parseFloat(document.getElementById('ohmP').value);
-
-  // Count how many inputs provided
   const provided = [V,I,R,P].filter(x => !isNaN(x)).length;
-  if (provided < 2) {
-    alert('Enter at least two values (V, I, R, or P).');
-    return;
-  }
-
-  // compute missing variables step-by-step (cover common cases)
-  if (!isNaN(V) && !isNaN(I)) {
-    R = V / I;
-    P = V * I;
-  } else if (!isNaN(V) && !isNaN(R)) {
-    I = V / R;
-    P = V * I;
-  } else if (!isNaN(I) && !isNaN(R)) {
-    V = I * R;
-    P = V * I;
-  } else if (!isNaN(P) && !isNaN(I)) {
-    V = P / I;
-    R = V / I;
-  } else if (!isNaN(P) && !isNaN(V)) {
-    I = P / V;
-    R = V / I;
-  } else if (!isNaN(P) && !isNaN(R)) {
-    I = Math.sqrt(P / R);
-    V = I * R;
-  }
-
+  if (provided < 2) { alert('Enter at least two values'); return; }
+  if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
+  else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
+  else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
+  else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
+  else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
+  else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
   document.getElementById('ohmRes').innerHTML =
-    `V = ${V.toFixed(3)} V<br>I = ${I.toFixed(3)} A<br>R = ${R.toFixed(3)} Ω<br>P = ${P.toFixed(3)} W`;
+    `V=${V.toFixed(2)}V<br>I=${I.toFixed(2)}A<br>R=${R.toFixed(2)}Ω<br>P=${P.toFixed(2)}W`;
 }
-function clearOhm(){
-  ['ohmV','ohmI','ohmR','ohmP'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('ohmRes').innerHTML='';
-}
+function clearOhm(){ ['ohmV','ohmI','ohmR','ohmP'].forEach(id=>document.getElementById(id).value=''); document.getElementById('ohmRes').innerHTML=''; }
 
-/* ------------------ TRANSFORMER ------------------ */
 function calcXfmr(){
   const Vp = parseFloat(document.getElementById('tp_vp').value);
   const Ip = parseFloat(document.getElementById('tp_ip').value);
-  const ratio = parseFloat(document.getElementById('tp_ratio').value);
-  const eff = parseFloat(document.getElementById('tp_eff').value);
-
-  if (isNaN(Vp) || isNaN(Ip) || isNaN(ratio) || ratio === 0) {
-    alert('Enter primary V, primary I and turns ratio (Np/Ns).');
-    return;
-  }
-
-  // Vs = Vp / (Np/Ns) = Vp / ratio
+  let ratio = parseFloat(document.getElementById('tp_ratio').value);
+  if (isNaN(ratio) || ratio <= 0) ratio = 2;
+  if (isNaN(Vp) || isNaN(Ip)) { alert('Enter primary V and I'); return; }
   const Vs = Vp / ratio;
-  // Is (ideal) = Ip * (Np/Ns) = Ip * ratio
   const Is = Ip * ratio;
-  const S_VA = Vs * Is; // apparent VA
-  let Pout = S_VA;
-  let note = 'Assuming ideal transformer.';
-
-  if (!isNaN(eff) && eff > 0) {
-    Pout = S_VA * (eff/100);
-    note = `Using efficiency ${eff}%`;
-  }
-
-  const out = 
-    `Vs = ${Vs.toFixed(3)} V<br>` +
-    `Is (ideal) = ${Is.toFixed(3)} A<br>` +
-    `Apparent power S = ${S_VA.toFixed(2)} VA<br>` +
-    `Output power (real) ≈ ${Pout.toFixed(2)} W<br>` +
-    `<div class="small">${note}</div>`;
-
-  document.getElementById('tpRes').innerHTML = out;
+  document.getElementById('tpRes').innerHTML =
+    `Vs=${Vs.toFixed(2)}V<br>Is=${Is.toFixed(2)}A<br>Turns Ratio=${ratio}`;
 }
-function clearXfmr(){
-  ['tp_vp','tp_ip','tp_ratio','tp_eff'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('tpRes').innerHTML='';
-}
+function clearXfmr(){ ['tp_vp','tp_ip','tp_ratio'].forEach(id=>document.getElementById(id).value=''); document.getElementById('tpRes').innerHTML=''; }
 
-/* ------------------ 3-PHASE ------------------ */
 function calcThree(){
   const Vl = parseFloat(document.getElementById('t_vl').value);
   const Il = parseFloat(document.getElementById('t_il').value);
   let pf = parseFloat(document.getElementById('t_pf').value);
-  const conn = document.getElementById('t_conn').value;
-
-  if (isNaN(Vl) || isNaN(Il)) {
-    alert('Enter line voltage and line current.');
-    return;
-  }
-  if (isNaN(pf) || pf <= 0) pf = 1.0; // default unity if not given
-
-  // Apparent power S = sqrt(3) * Vl * Il
+  if (isNaN(pf) || pf <= 0) pf = 1;
+  if (isNaN(Vl) || isNaN(Il)) { alert('Enter V and I'); return; }
   const S_va = Math.SQRT3 * Vl * Il;
-  const P_kw = (S_va * pf) / 1000; // real power in kW
-  const Q_var = Math.sqrt(Math.max(0, S_va*S_va - (S_va*pf)*(S_va*pf)));
-
-  let extra = '';
-  if (conn === 'star') {
-    extra = 'Star connection (phase voltage = V_L/√3).';
-  } else {
-    extra = 'Delta connection (phase current differs from line current).';
-  }
-
-  const out =
-    `Apparent power S = ${S_va.toFixed(2)} VA<br>` +
-    `Real power P = ${P_kw.toFixed(3)} kW (pf=${pf})<br>` +
-    `Reactive power Q = ${Q_var.toFixed(2)} VAR<br>` +
-    `<div class="small">${extra}</div>`;
-
-  document.getElementById('threeRes').innerHTML = out;
+  const P_kw = (S_va * pf) / 1000;
+  document.getElementById('threeRes').innerHTML =
+    `S=${S_va.toFixed(2)}VA<br>P=${P_kw.toFixed(3)}kW<br>pf=${pf}`;
 }
-function clearThree(){
-  ['t_vl','t_il','t_pf'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('threeRes').innerHTML='';
-}
+function clearThree(){ ['t_vl','t_il','t_pf'].forEach(id=>document.getElementById(id).value=''); document.getElementById('threeRes').innerHTML=''; }
 
-/* ------------------ BATTERY ------------------ */
 function calcBattery(){
   const Ah = parseFloat(document.getElementById('b_ah').value);
   const V = parseFloat(document.getElementById('b_v').value);
   const loadW = parseFloat(document.getElementById('b_load').value);
-  let dod = parseFloat(document.getElementById('b_dod').value);
-  let invEff = parseFloat(document.getElementById('b_inv').value);
-
-  if (isNaN(Ah) || isNaN(V) || isNaN(loadW) || loadW <= 0) {
-    alert('Enter battery Ah, system voltage and load (W).');
-    return;
-  }
-  if (isNaN(dod) || dod <= 0) dod = 80; // percent
-  if (isNaN(invEff) || invEff <= 0) invEff = 90; // percent
-
-  // Total stored energy (Wh)
+  if (isNaN(Ah) || isNaN(V) || isNaN(loadW)) { alert('Enter Ah, Voltage, and Load'); return; }
+  const dod = 0.8; // 80%
+  const eff = 0.9; // 90%
   const totalWh = Ah * V;
-  // Usable energy depends on DoD and inverter efficiency
-  const usableWh = totalWh * (dod/100) * (invEff/100);
+  const usableWh = totalWh * dod * eff;
   const hours = usableWh / loadW;
-  const minutes = hours * 60;
-
   let hr = Math.floor(hours);
   let min = Math.round((hours - hr) * 60);
-
-  const out =
-    `Battery stored energy ≈ ${totalWh.toFixed(1)} Wh<br>` +
-    `Usable energy (DoD ${dod}% & inverter ${invEff}% ) ≈ ${usableWh.toFixed(1)} Wh<br>` +
-    `Estimated backup time ≈ ${hours.toFixed(2)} hours (${hr}h ${min}m)<br>` +
-    `<div class="small">Note: results are approximate — temperature, battery age and inverter idle draw affect real time.</div>`;
-
-  document.getElementById('batRes').innerHTML = out;
+  document.getElementById('batRes').innerHTML =
+    `Backup Time ≈ ${hr}h ${min}m<br>(Usable Energy=${usableWh.toFixed(1)}Wh)`;
 }
-function clearBattery(){
-  ['b_ah','b_v','b_load','b_dod','b_inv'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('batRes').innerHTML='';
-}
+function clearBattery(){ ['b_ah','b_v','b_load'].forEach(id=>document.getElementById(id).value=''); document.getElementById('batRes').innerHTML=''; }
 </script>
 
 </body>
