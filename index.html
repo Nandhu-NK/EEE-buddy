@@ -6,207 +6,104 @@
 <title>EEE Buddy — Multi-Tool</title>
 <style>
   body {
-    margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin:0; font-family:'Segoe UI',Arial,sans-serif;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff; display:flex; flex-direction:column; align-items:center;
   }
-  header {
-    text-align: center;
-    padding: 20px;
+  header { text-align:center; padding:20px; }
+  header h1 { font-size:2rem; color:#00eaff; text-shadow:0 0 15px rgba(0,234,255,.7); }
+  .sub { font-size:1rem; opacity:.8; }
+
+  .selector {
+    background:rgba(255,255,255,.08);
+    padding:20px; border-radius:15px; margin:20px; max-width:400px; width:90%;
+    text-align:center; box-shadow:0 4px 20px rgba(0,0,0,.4);
   }
-  header h1 {
-    font-size: 2rem;
-    color: #00eaff;
-    text-shadow: 0px 0px 15px rgba(0,234,255,0.7);
+  select, input {
+    width:100%; padding:10px; border-radius:8px; border:none; margin-top:8px;
+    font-size:1rem; background:rgba(255,255,255,.15); color:#fff; outline:none;
   }
-  .sub { font-size: 1rem; opacity: 0.8; }
-  .wrap {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    max-width: 1100px;
-    width: 100%;
-    padding: 20px;
-  }
-  .card {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 15px;
-    padding: 20px;
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .card:hover { transform: translateY(-5px); box-shadow: 0px 6px 30px rgba(0,234,255,0.3); }
-  h2 { color: #ffd36b; text-align: center; margin-bottom: 15px; }
-  .small { font-size: 0.85rem; opacity: 0.85; margin-bottom: 10px; text-align: center; }
-  label { font-weight: bold; display: block; margin-top: 8px; }
-  input, select {
-    width: 100%; padding: 10px; border-radius: 8px; border: none; margin-top: 4px;
-    font-size: 1rem; background: rgba(255,255,255,0.15); color: #fff; outline: none;
-  }
-  input[readonly] { background: rgba(255,255,255,0.05); color: #aaa; cursor: not-allowed; }
-  input::placeholder { color: rgba(255,255,255,0.6); }
-  .controls { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+  input[readonly] { background:rgba(255,255,255,.05); color:#aaa; cursor:not-allowed; }
+  input::placeholder { color:rgba(255,255,255,.6); }
   button {
-    padding: 10px 15px; font-size: 1rem; font-weight: bold; border: none; border-radius: 8px;
-    cursor: pointer; background: linear-gradient(90deg, #00eaff, #0077ff); color: #000;
-    box-shadow: 0 0 10px rgba(0,234,255,0.5); transition: transform 0.2s ease;
+    padding:10px 15px; font-size:1rem; font-weight:700; border:none; border-radius:8px; cursor:pointer;
+    background:linear-gradient(90deg,#00eaff,#0077ff); color:#000; box-shadow:0 0 10px rgba(0,234,255,.5);
+    transition:transform .2s ease; margin-top:12px;
   }
-  button:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0,234,255,0.8); }
-  .secondary { background: linear-gradient(90deg, #ffd36b, #ff9b4b); box-shadow: 0 0 10px rgba(255,211,107,0.5); }
-  .result {
-    margin-top: 15px; padding: 12px; background: rgba(0,0,0,0.3);
-    border-radius: 8px; text-align: center; font-weight: bold; color: #00ffea;
+  button:hover { transform:scale(1.05); box-shadow:0 0 20px rgba(0,234,255,.8); }
+  .secondary { background:linear-gradient(90deg,#ffd36b,#ff9b4b); box-shadow:0 0 10px rgba(255,211,107,.5); }
+
+  .card {
+    display:none; background:rgba(255,255,255,.08);
+    border-radius:15px; padding:20px; margin:20px;
+    backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 4px 20px rgba(0,0,0,.4);
+    max-width:500px; width:90%;
   }
-  .formula {
-    margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.05);
-    border-radius: 6px; font-size: 0.85rem; color: #fffacd;
-  }
+  h2 { color:#ffd36b; text-align:center; margin-bottom:15px; }
+  .small { font-size:.85rem; opacity:.85; margin-bottom:10px; text-align:center; }
+  .result { margin-top:15px; padding:12px; background:rgba(0,0,0,.3); border-radius:8px; text-align:center; font-weight:700; color:#00ffea; }
+  .formula { margin-top:12px; padding:8px; background:rgba(255,255,255,.05); border-radius:6px; font-size:.86rem; color:#fffacd; text-align:center; }
 </style>
 </head>
 <body>
 
 <header>
   <h1>⚡ EEE Buddy — Multi-Tool</h1>
-  <div class="sub">Ohm's Law • Transformer • 3-Phase Power • Battery Backup</div>
+  <div class="sub">Choose your calculation</div>
 </header>
 
-<div class="wrap">
-
-  <!-- Ohm's Law -->
-  <div class="card">
-    <h2>Ohm's Law Calculator</h2>
-    <div class="small">Select what to calculate</div>
-    <label>Calculate:</label>
-    <select id="ohmChoice" onchange="updateFields('ohm')">
-      <option value="V">Voltage (V)</option>
-      <option value="I">Current (A)</option>
-      <option value="R">Resistance (Ω)</option>
-      <option value="P">Power (W)</option>
-    </select>
-    <label>Voltage (V)</label><input id="ohmV" type="number">
-    <label>Current (A)</label><input id="ohmI" type="number">
-    <label>Resistance (Ω)</label><input id="ohmR" type="number">
-    <label>Power (W)</label><input id="ohmP" type="number">
-    <div class="controls">
-      <button onclick="calcOhm()">Calculate</button>
-      <button class="secondary" onclick="clearFields('ohm')">Clear</button>
-    </div>
-    <div id="ohmRes" class="result"></div>
-    <div class="formula">V = I × R, P = V × I</div>
-  </div>
-
-  <!-- Transformer -->
-  <div class="card">
-    <h2>Transformer Calculator</h2>
-    <div class="small">Select what to calculate</div>
-    <label>Calculate:</label>
-    <select id="trChoice" onchange="updateFields('tr')">
-      <option value="Vs">Secondary Voltage (Vs)</option>
-      <option value="Is">Secondary Current (Is)</option>
-    </select>
-    <label>Primary Voltage (Vp)</label><input id="trVp" type="number">
-    <label>Primary Current (Ip)</label><input id="trIp" type="number">
-    <label>Turns Ratio (Np/Ns)</label><input id="trRatio" type="number" placeholder="Default 2">
-    <label>Secondary Voltage (Vs)</label><input id="trVs" type="number">
-    <label>Secondary Current (Is)</label><input id="trIs" type="number">
-    <div class="controls">
-      <button onclick="calcTransformer()">Calculate</button>
-      <button class="secondary" onclick="clearFields('tr')">Clear</button>
-    </div>
-    <div id="trRes" class="result"></div>
-    <div class="formula">Vs = Vp ÷ Ratio, Is = Ip × Ratio</div>
-  </div>
-
-  <!-- 3-Phase -->
-  <div class="card">
-    <h2>3-Phase Power Calculator</h2>
-    <div class="small">Select what to calculate</div>
-    <label>Calculate:</label>
-    <select id="phChoice" onchange="updateFields('ph')">
-      <option value="P">Power (kW)</option>
-    </select>
-    <label>Line Voltage (V)</label><input id="phVl" type="number">
-    <label>Line Current (A)</label><input id="phIl" type="number">
-    <label>Power Factor</label><input id="phPf" type="number" placeholder="0.8">
-    <label>Power (kW)</label><input id="phP" type="number">
-    <div class="controls">
-      <button onclick="calcThreePhase()">Calculate</button>
-      <button class="secondary" onclick="clearFields('ph')">Clear</button>
-    </div>
-    <div id="phRes" class="result"></div>
-    <div class="formula">P = √3 × V × I × PF / 1000</div>
-  </div>
-
-  <!-- Battery -->
-  <div class="card">
-    <h2>Battery Backup Time Calculator</h2>
-    <div class="small">Select what to calculate</div>
-    <label>Calculate:</label>
-    <select id="batChoice" onchange="updateFields('bat')">
-      <option value="time">Backup Time</option>
-    </select>
-    <label>Battery Capacity (Ah)</label><input id="batAh" type="number">
-    <label>Voltage (V)</label><input id="batV" type="number">
-    <label>Load (W)</label><input id="batLoad" type="number">
-    <label>Backup Time (h)</label><input id="batTime" type="number">
-    <div class="controls">
-      <button onclick="calcBattery()">Calculate</button>
-      <button class="secondary" onclick="clearFields('bat')">Clear</button>
-    </div>
-    <div id="batRes" class="result"></div>
-    <div class="formula">Time = (Ah × V × DOD × η) ÷ Load</div>
-  </div>
-
+<div class="selector">
+  <label>Select Calculator:</label>
+  <select id="calcType" onchange="showCalculator()">
+    <option value="">-- Select --</option>
+    <option value="ohm">Ohm's Law</option>
+    <option value="tr">Transformer</option>
+    <option value="ph">3-Phase Power</option>
+    <option value="bat">Battery Backup</option>
+  </select>
 </div>
 
-<script>
-function updateFields(prefix){
-  let choice = document.getElementById(prefix+'Choice').value;
-  let inputs = document.querySelectorAll(`[id^=${prefix}]`);
-  inputs.forEach(inp => inp.readOnly = false);
-  if(choice){
-    document.getElementById(prefix + choice.charAt(0).toUpperCase() + choice.slice(1)).readOnly = true;
-  }
-}
-function clearFields(prefix){
-  document.querySelectorAll(`[id^=${prefix}]`).forEach(inp => { inp.value=''; inp.readOnly=false; });
-  document.getElementById(prefix+'Res').innerHTML='';
-}
+<!-- OHM's LAW -->
+<div class="card" id="ohmCard">
+  <h2>Ohm's Law Calculator</h2>
+  <div class="small">Pick what to calculate:</div>
+  <select id="ohmChoice" onchange="updateFields('ohm')">
+    <option value="V">Voltage</option>
+    <option value="I">Current</option>
+    <option value="R">Resistance</option>
+    <option value="P">Power</option>
+  </select>
+  <label>Voltage (V)</label><input id="ohmV" type="number" step="any" placeholder="auto">
+  <label>Current (A)</label><input id="ohmI" type="number" step="any">
+  <label>Resistance (Ω)</label><input id="ohmR" type="number" step="any">
+  <label>Power (W)</label><input id="ohmP" type="number" step="any" placeholder="auto">
+  <button onclick="calcOhm()">Calculate</button>
+  <button class="secondary" onclick="clearSection('ohm')">Clear</button>
+  <div id="ohmRes" class="result"></div>
+  <div class="formula">Formula: V = I × R, P = V × I</div>
+</div>
 
-/* Calculations */
-function calcOhm(){
-  let V=parseFloat(ohmV.value), I=parseFloat(ohmI.value), R=parseFloat(ohmR.value), P=parseFloat(ohmP.value);
-  let choice=ohmChoice.value;
-  if(choice==='V'){ if(isNaN(I)||isNaN(R)) return alert("Enter I and R"); V=I*R; P=V*I; ohmV.value=V; ohmP.value=P; }
-  if(choice==='I'){ if(isNaN(V)||isNaN(R)) return alert("Enter V and R"); I=V/R; P=V*I; ohmI.value=I; ohmP.value=P; }
-  if(choice==='R'){ if(isNaN(V)||isNaN(I)) return alert("Enter V and I"); R=V/I; P=V*I; ohmR.value=R; ohmP.value=P; }
-  if(choice==='P'){ if(isNaN(V)||isNaN(I)) return alert("Enter V and I"); P=V*I; ohmP.value=P; }
-}
-function calcTransformer(){
-  let Vp=parseFloat(trVp.value), Ip=parseFloat(trIp.value), ratio=parseFloat(trRatio.value)||2;
-  let Vs=parseFloat(trVs.value), Is=parseFloat(trIs.value);
-  let choice=trChoice.value;
-  if(choice==='Vs'){ if(isNaN(Vp)) return alert("Enter Vp"); Vs=Vp/ratio; trVs.value=Vs; }
-  if(choice==='Is'){ if(isNaN(Ip)) return alert("Enter Ip"); Is=Ip*ratio; trIs.value=Is; }
-}
-function calcThreePhase(){
-  let Vl=parseFloat(phVl.value), Il=parseFloat(phIl.value), pf=parseFloat(phPf.value)||1;
-  if(isNaN(Vl)||isNaN(Il)) return alert("Enter Vl and Il");
-  let P=(Math.sqrt(3)*Vl*Il*pf)/1000; phP.value=P;
-}
-function calcBattery(){
-  let Ah=parseFloat(batAh.value), V=parseFloat(batV.value), load=parseFloat(batLoad.value);
-  const dod=0.8, eff=0.9;
-  if(isNaN(Ah)||isNaN(V)||isNaN(load)) return alert("Enter Ah, V and Load");
-  let time=(Ah*V*dod*eff)/load; batTime.value=time.toFixed(2);
-}
-updateFields('ohm'); updateFields('tr'); updateFields('ph'); updateFields('bat');
-</script>
-</body>
-</html>
+<!-- TRANSFORMER -->
+<div class="card" id="trCard">
+  <h2>Transformer Calculator</h2>
+  <div class="small">Pick what to calculate:</div>
+  <select id="trChoice" onchange="updateFields('tr')">
+    <option value="Vs">Secondary Voltage</option>
+    <option value="Is">Secondary Current</option>
+  </select>
+  <label>Primary Voltage (Vp)</label><input id="trVp" type="number" step="any">
+  <label>Primary Current (Ip)</label><input id="trIp" type="number" step="any">
+  <label>Turns Ratio (Np/Ns)</label><input id="trRatio" type="number" step="any" placeholder="Default 2">
+  <label>Secondary Voltage (Vs)</label><input id="trVs" type="number" step="any" placeholder="auto">
+  <label>Secondary Current (Is)</label><input id="trIs" type="number" step="any" placeholder="auto">
+  <button onclick="calcTransformer()">Calculate</button>
+  <button class="secondary" onclick="clearSection('tr')">Clear</button>
+  <div id="trRes" class="result"></div>
+  <div class="formula">Vs = Vp ÷ ratio, Is = Ip × ratio</div>
+</div>
+
+<!-- 3-PHASE -->
+<div class="card" id="phCard">
+  <h2>3-Phase Power Calculator</h2>
+  <label>Lin
