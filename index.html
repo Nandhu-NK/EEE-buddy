@@ -10,11 +10,10 @@
     font-family: 'Segoe UI', Arial, sans-serif;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
   }
-  header { text-align: center; padding: 20px; }
+
+  header { padding: 20px; }
   header h1 {
     font-size: 2rem;
     color: #00eaff;
@@ -22,193 +21,247 @@
   }
   .sub { font-size: 1rem; opacity: 0.8; }
 
-  /* Home menu */
   .menu {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
-    width: 90%;
-    max-width: 900px;
-    margin-top: 30px;
+    margin: 30px;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeSlideIn 1s ease forwards;
   }
   .menu button {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 15px;
-    padding: 30px;
-    color: #fff;
-    font-size: 1.2rem;
+    padding: 20px;
+    width: 150px;
+    height: 150px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
     cursor: pointer;
-    backdrop-filter: blur(12px);
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(0,234,255,0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    gap: 10px;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .menu button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 6px 30px rgba(0,234,255,0.3);
-  }
-  .icon {
-    font-size: 2.5rem;
-  }
-  .bolt { animation: glow 1s infinite alternate; }
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #0ff; }
-    to { text-shadow: 0 0 25px #0ff; }
-  }
-  .rotate { animation: spin 3s linear infinite; }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .gear { animation: slowspin 5s linear infinite; }
-  @keyframes slowspin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .charge { animation: charge 1.5s infinite alternate; }
-  @keyframes charge {
-    from { color: #fff; }
-    to { color: #0f0; }
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(0,234,255,0.8);
   }
 
-  /* Calculator card */
+  .icon { font-size: 2.5rem; }
+  .glow { animation: glowPulse 1s infinite alternate; color: #ffea00; }
+  @keyframes glowPulse {
+    from { text-shadow: 0 0 5px yellow, 0 0 10px orange; }
+    to { text-shadow: 0 0 15px yellow, 0 0 25px orange; }
+  }
+  .rotate { animation: rotateAnim 2s linear infinite; color: #00eaff; }
+  @keyframes rotateAnim { 100% { transform: rotate(360deg); } }
+  .spin { animation: spinGear 5s linear infinite; color: #ff9b4b; }
+  @keyframes spinGear { 100% { transform: rotate(360deg); } }
+  .charge { animation: chargeAnim 1.5s infinite alternate; color: #00ff7f; }
+  @keyframes chargeAnim {
+    from { opacity: 0.6; }
+    to { opacity: 1; text-shadow: 0 0 15px #00ff7f; }
+  }
+  @keyframes fadeSlideIn { to { opacity: 1; transform: translateY(0); } }
+
   .card {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 15px;
     padding: 20px;
+    max-width: 400px;
+    margin: 20px auto;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
-    max-width: 400px;
-    width: 90%;
-    margin-top: 20px;
+    display: none;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+    text-align: left;
   }
-  h2 { color: #ffd36b; text-align: center; }
-  label { font-weight: bold; display: block; margin-top: 8px; }
-  input, select {
-    width: 100%;
+  label { display: block; margin-top: 10px; font-weight: bold; }
+  input {
+    width: 95%;
     padding: 10px;
+    margin-top: 5px;
     border-radius: 8px;
     border: none;
-    margin-top: 4px;
-    font-size: 1rem;
     background: rgba(255,255,255,0.15);
     color: #fff;
-    outline: none;
   }
-  .controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-  }
-  button.calc {
+  input::placeholder { color: rgba(255,255,255,0.6); }
+  .controls { margin-top: 15px; display: flex; gap: 10px; }
+  button.calc-btn {
+    flex: 1;
     padding: 10px 15px;
-    font-size: 1rem;
-    font-weight: bold;
+    background: linear-gradient(90deg, #ffd36b, #ff9b4b);
     border: none;
     border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
-    background: linear-gradient(90deg, #00eaff, #0077ff);
-    color: #000;
-    box-shadow: 0 0 10px rgba(0,234,255,0.5);
   }
-  button.secondary {
-    background: linear-gradient(90deg, #ffd36b, #ff9b4b);
-    color: #000;
+  .secondary {
+    background: linear-gradient(90deg, #00eaff, #0077ff);
+    color: black;
   }
   .result {
     margin-top: 15px;
-    padding: 12px;
+    padding: 10px;
     background: rgba(0,0,0,0.3);
     border-radius: 8px;
     text-align: center;
-    font-weight: bold;
-    color: #00ffea;
   }
-  .hidden { display: none; }
+  @keyframes fadeIn { to { opacity: 1; } }
 </style>
 </head>
 <body>
 
 <header>
   <h1>⚡ EEE Buddy — Multi-Tool</h1>
-  <div class="sub">Select a calculator</div>
+  <div class="sub">Choose your calculator</div>
 </header>
 
-<div id="home" class="menu">
-  <button onclick="openCalc('ohm')"><div class="icon bolt">⚡</div>Ohm's Law</button>
-  <button onclick="openCalc('xfmr')"><div class="icon rotate">🔄</div>Transformer</button>
-  <button onclick="openCalc('three')"><div class="icon gear">⚙️</div>3-Phase Power</button>
-  <button onclick="openCalc('bat')"><div class="icon charge">🔋</div>Battery Backup</button>
+<div class="menu">
+  <button onclick="showCalc('ohm')"><div class="icon glow">⚡</div>Ohm's Law</button>
+  <button onclick="showCalc('xfmr')"><div class="icon rotate">🔄</div>Transformer</button>
+  <button onclick="showCalc('three')"><div class="icon spin">⚙️</div>3-Phase Power</button>
+  <button onclick="showCalc('battery')"><div class="icon charge">🔋</div>Battery Backup</button>
 </div>
 
-<!-- Ohm's Law -->
-<div id="calc-ohm" class="card hidden">
-  <h2>Ohm's Law Calculator</h2>
-  <label>Parameter to Calculate</label>
-  <select id="ohm-choice" onchange="updateFields('ohm')">
-    <option value="V">Voltage (V)</option>
-    <option value="I">Current (A)</option>
-    <option value="R">Resistance (Ω)</option>
-    <option value="P">Power (W)</option>
-  </select>
-  <label>Voltage (V)</label>
-  <input id="ohmV" type="number" step="any">
-  <label>Current (A)</label>
-  <input id="ohmI" type="number" step="any">
-  <label>Resistance (Ω)</label>
-  <input id="ohmR" type="number" step="any">
-  <label>Power (W)</label>
-  <input id="ohmP" type="number" step="any">
+<!-- OHM -->
+<div id="ohm" class="card">
+  <h2>Ohm's Law</h2>
+  <label>Voltage (V)</label><input id="ohmV" type="number" step="any">
+  <label>Current (A)</label><input id="ohmI" type="number" step="any">
+  <label>Resistance (Ω)</label><input id="ohmR" type="number" step="any">
+  <label>Power (W)</label><input id="ohmP" type="number" step="any">
   <div class="controls">
-    <button class="calc" onclick="calcOhm()">Calculate</button>
-    <button class="secondary" onclick="backHome()">Back</button>
+    <button class="calc-btn" onclick="calcOhm()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearOhm()">Clear</button>
   </div>
   <div id="ohmRes" class="result"></div>
 </div>
 
-<!-- You can add Transformer, 3-Phase, Battery sections similar to above -->
-<!-- ... -->
+<!-- TRANSFORMER -->
+<div id="xfmr" class="card">
+  <h2>Transformer</h2>
+  <label>Primary Voltage (Vp)</label><input id="tp_vp" type="number" step="any">
+  <label>Primary Current (Ip)</label><input id="tp_ip" type="number" step="any">
+  <label>Turns Ratio (Np/Ns)</label><input id="tp_ratio" type="number" step="any" placeholder="Default 2">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcXfmr()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearXfmr()">Clear</button>
+  </div>
+  <div id="tpRes" class="result"></div>
+</div>
+
+<!-- 3 PHASE -->
+<div id="three" class="card">
+  <h2>3-Phase Power</h2>
+  <label>Line Voltage (V)</label><input id="t_vl" type="number" step="any">
+  <label>Line Current (A)</label><input id="t_il" type="number" step="any">
+  <label>Power Factor</label><input id="t_pf" type="number" step="any" placeholder="0.8">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcThree()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearThree()">Clear</button>
+  </div>
+  <div id="threeRes" class="result"></div>
+</div>
+
+<!-- BATTERY -->
+<div id="battery" class="card">
+  <h2>Battery Backup</h2>
+  <label>Battery Capacity (Ah)</label><input id="b_ah" type="number" step="any">
+  <label>Voltage (V)</label><input id="b_v" type="number" step="any">
+  <label>Load (W)</label><input id="b_load" type="number" step="any">
+  <div class="controls">
+    <button class="calc-btn" onclick="calcBattery()">Calculate</button>
+    <button class="calc-btn secondary" onclick="clearBattery()">Clear</button>
+  </div>
+  <div id="batRes" class="result"></div>
+</div>
 
 <script>
-function backHome(){
-  document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
-  document.getElementById('home').classList.remove('hidden');
+function showCalc(id) {
+  document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
+  const card = document.getElementById(id);
+  card.style.display = 'block';
+  card.style.animation = 'fadeIn 0.6s ease forwards';
 }
-function openCalc(id){
-  document.getElementById('home').classList.add('hidden');
-  document.getElementById('calc-'+id).classList.remove('hidden');
-  updateFields(id);
-}
-function updateFields(calc){
-  if(calc==='ohm'){
-    const choice = document.getElementById('ohm-choice').value;
-    ['ohmV','ohmI','ohmR','ohmP'].forEach(id=>{
-      document.getElementById(id).readOnly = (id.toLowerCase().includes(choice.toLowerCase()));
-      document.getElementById(id).value = '';
-    });
-  }
-}
+
+// OHM
 function calcOhm(){
   let V = parseFloat(document.getElementById('ohmV').value);
   let I = parseFloat(document.getElementById('ohmI').value);
   let R = parseFloat(document.getElementById('ohmR').value);
   let P = parseFloat(document.getElementById('ohmP').value);
-  const choice = document.getElementById('ohm-choice').value;
-
-  if(choice==='V' && !isNaN(I) && !isNaN(R)) V = I*R;
-  else if(choice==='I' && !isNaN(V) && !isNaN(R)) I = V/R;
-  else if(choice==='R' && !isNaN(V) && !isNaN(I)) R = V/I;
-  else if(choice==='P' && !isNaN(V) && !isNaN(I)) P = V*I;
-  else { alert('Enter required values'); return; }
-
-  document.getElementById('ohmRes').innerHTML = `V=${(V||0).toFixed(2)} V<br>I=${(I||0).toFixed(2)} A<br>R=${(R||0).toFixed(2)} Ω<br>P=${(P||0).toFixed(2)} W`;
+  const provided = [V,I,R,P].filter(x => !isNaN(x)).length;
+  if (provided < 2) { alert('Enter at least two values'); return; }
+  if (!isNaN(V) && !isNaN(I)) { R = V / I; P = V * I; }
+  else if (!isNaN(V) && !isNaN(R)) { I = V / R; P = V * I; }
+  else if (!isNaN(I) && !isNaN(R)) { V = I * R; P = V * I; }
+  else if (!isNaN(P) && !isNaN(I)) { V = P / I; R = V / I; }
+  else if (!isNaN(P) && !isNaN(V)) { I = P / V; R = V / I; }
+  else if (!isNaN(P) && !isNaN(R)) { I = Math.sqrt(P / R); V = I * R; }
+  document.getElementById('ohmRes').innerHTML =
+    `V=${V.toFixed(2)}V<br>I=${I.toFixed(2)}A<br>R=${R.toFixed(2)}Ω<br>P=${P.toFixed(2)}W`;
 }
+function clearOhm(){ ['ohmV','ohmI','ohmR','ohmP'].forEach(id=>document.getElementById(id).value=''); document.getElementById('ohmRes').innerHTML=''; }
+
+// TRANSFORMER
+function calcXfmr(){
+  const Vp = parseFloat(document.getElementById('tp_vp').value);
+  const Ip = parseFloat(document.getElementById('tp_ip').value);
+  let ratio = parseFloat(document.getElementById('tp_ratio').value);
+  if (isNaN(ratio) || ratio <= 0) ratio = 2;
+  if (isNaN(Vp) || isNaN(Ip)) { alert('Enter primary V and I'); return; }
+  const Vs = Vp / ratio;
+  const Is = Ip * ratio;
+  document.getElementById('tpRes').innerHTML =
+    `Vs=${Vs.toFixed(2)}V<br>Is=${Is.toFixed(2)}A<br>Turns Ratio=${ratio}`;
+}
+function clearXfmr(){ ['tp_vp','tp_ip','tp_ratio'].forEach(id=>document.getElementById(id).value=''); document.getElementById('tpRes').innerHTML=''; }
+
+// 3 PHASE
+function calcThree(){
+  const Vl = parseFloat(document.getElementById('t_vl').value);
+  const Il = parseFloat(document.getElementById('t_il').value);
+  let pf = parseFloat(document.getElementById('t_pf').value);
+  if (isNaN(pf) || pf <= 0) pf = 1;
+  if (isNaN(Vl) || isNaN(Il)) { alert('Enter V and I'); return; }
+  const S_va = Math.SQRT3 * Vl * Il;
+  const P_kw = (S_va * pf) / 1000;
+  document.getElementById('threeRes').innerHTML =
+    `S=${S_va.toFixed(2)}VA<br>P=${P_kw.toFixed(3)}kW<br>pf=${pf}`;
+}
+function clearThree(){ ['t_vl','t_il','t_pf'].forEach(id=>document.getElementById(id).value=''); document.getElementById('threeRes').innerHTML=''; }
+
+// BATTERY
+function calcBattery(){
+  const Ah = parseFloat(document.getElementById('b_ah').value);
+  const V = parseFloat(document.getElementById('b_v').value);
+  const loadW = parseFloat(document.getElementById('b_load').value);
+  if (isNaN(Ah) || isNaN(V) || isNaN(loadW)) { alert('Enter Ah, Voltage, and Load'); return; }
+  const dod = 0.8; 
+  const eff = 0.9; 
+  const totalWh = Ah * V;
+  const usableWh = totalWh * dod * eff;
+  const hours = usableWh / loadW;
+  let hr = Math.floor(hours);
+  let min = Math.round((hours - hr) * 60);
+  document.getElementById('batRes').innerHTML =
+    `Backup Time ≈ ${hr}h ${min}m<br>(Usable Energy=${usableWh.toFixed(1)}Wh)`;
+}
+function clearBattery(){ ['b_ah','b_v','b_load'].forEach(id=>document.getElementById(id).value=''); document.getElementById('batRes').innerHTML=''; }
 </script>
+
 </body>
 </html>
