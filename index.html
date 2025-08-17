@@ -165,7 +165,7 @@
     card.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
-  // Robust number parser (handles blanks & commas)
+  // Number parser
   function numFrom(id){
     const raw = (document.getElementById(id).value || "").toString().trim().replace(/,/g,'.');
     const n = parseFloat(raw);
@@ -200,19 +200,21 @@
   }
   function clearXfmr(){ ['tp_vp','tp_ip','tp_ratio'].forEach(id=>document.getElementById(id).value=''); document.getElementById('tpRes').innerHTML=''; }
 
-  // ——— 3-Phase (FIXED NaN) ———
+  // ——— 3-Phase (Corrected) ———
   function calcThree(){
     const Vl=numFrom('t_vl'), Il=numFrom('t_il'); let pf=numFrom('t_pf');
     if (Vl===null || Il===null){ alert('Enter line voltage and line current'); return; }
-    if (pf===null || pf<=0 || pf>1) pf=1; // clamp if blank/invalid
+    if (pf===null || pf<=0 || pf>1) pf=1;
 
-    const S_va = Math.SQRT3 * Vl * Il;          // VA
-    const P_w  = S_va * pf;                      // W
-    const Q_var = Math.sqrt(Math.max(0, S_va*S_va - P_w*P_w)); // VAR
+    const S_va = Math.sqrt(3) * Vl * Il;   // Apparent Power VA
+    const P_w  = S_va * pf;                // Real Power W
+    const Q_var = Math.sqrt(Math.max(0, (S_va*S_va) - (P_w*P_w))); // Reactive Power VAR
     const P_kw = P_w / 1000;
 
     document.getElementById('threeRes').innerHTML =
-      `S = ${S_va.toFixed(2)} VA<br>P = ${P_kw.toFixed(3)} kW (pf=${pf})<br>Q = ${Q_var.toFixed(2)} VAR`;
+      `S = ${S_va.toFixed(2)} VA<br>` +
+      `P = ${P_kw.toFixed(3)} kW (pf=${pf})<br>` +
+      `Q = ${Q_var.toFixed(2)} VAR`;
   }
   function clearThree(){ ['t_vl','t_il','t_pf'].forEach(id=>document.getElementById(id).value=''); document.getElementById('threeRes').innerHTML=''; }
 
