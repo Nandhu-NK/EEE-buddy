@@ -68,7 +68,7 @@
   @keyframes fadeIn{to{opacity:1}}
 
   label{display:block;margin-top:10px;font-weight:700}
-  input{
+  input, select{
     width:95%;padding:10px;margin-top:5px;border-radius:8px;border:none;
     background:rgba(255,255,255,.15);color:#fff;outline:none;
   }
@@ -84,6 +84,16 @@
   }
   .result{
     margin-top:15px;padding:10px;background:rgba(0,0,0,.3);border-radius:8px;text-align:center
+  }
+
+  /* Read-only visual for locked field */
+  .readonly{
+    background:rgba(255,255,255,0.08) !important;
+    opacity:0.85;
+    cursor:not-allowed;
+  }
+  .hint{
+    font-size:.85rem;opacity:.8;margin-top:6px;text-align:center
   }
 </style>
 </head>
@@ -102,13 +112,24 @@
   <button onclick="showCalc('battery')"><div class="icon charge">🔋</div>Battery Backup</button>
 </div>
 
-<!-- Ohm’s Law -->
+<!-- Ohm’s Law (upgraded: solve specific term) -->
 <div id="ohm" class="card">
   <h2>Ohm's Law</h2>
+
+  <label>Solve for</label>
+  <select id="ohmMode" onchange="setOhmMode()">
+    <option value="V">Voltage (V)</option>
+    <option value="I">Current (I)</option>
+    <option value="R">Resistance (Ω)</option>
+    <option value="P">Power (W)</option>
+  </select>
+  <div class="hint">Enter <b>any two</b> of the remaining three values. The selected term will be calculated.</div>
+
   <label>Voltage (V)</label><input id="ohmV" type="number" step="any" inputmode="decimal" placeholder="e.g., 12">
   <label>Current (A)</label><input id="ohmI" type="number" step="any" inputmode="decimal" placeholder="e.g., 2">
   <label>Resistance (Ω)</label><input id="ohmR" type="number" step="any" inputmode="decimal" placeholder="e.g., 6">
   <label>Power (W)</label><input id="ohmP" type="number" step="any" inputmode="decimal" placeholder="e.g., 24">
+
   <div class="controls">
     <button class="calc-btn" onclick="calcOhm()">Calculate</button>
     <button class="calc-btn secondary" onclick="clearOhm()">Clear</button>
@@ -165,31 +186,102 @@
     card.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
-  // Number parser
+  // Robust number parser (handles blanks & commas)
   function numFrom(id){
     const raw = (document.getElementById(id).value || "").toString().trim().replace(/,/g,'.');
     const n = parseFloat(raw);
     return Number.isFinite(n) ? n : null;
   }
 
-  // ——— Ohm’s Law ———
-  function calcOhm(){
-    let V=numFrom('ohmV'), I=numFrom('ohmI'), R=numFrom('ohmR'), P=numFrom('ohmP');
-    if ([V,I,R,P].filter(x=>x!==null).length<2){ alert('Enter at least two values'); return; }
+  /* ===================== OHM’S LAW (solve selected term) ===================== */
+  function setOhmMode(){
+    const mode = document.getElementById('ohmMode').value; // 'V' | 'I' | 'R' | 'P'
+    const ids = {V:'ohmV', I:'ohmI', R:'ohmR', P:'ohmP'};
 
-    if (V!==null && I!==null){ R=V/I; P=V*I; }
-    else if (V!==null && R!==null){ I=V/R; P=V*I; }
-    else if (I!==null && R!==null){ V=I*R; P=V*I; }
-    else if (P!==null && I!==null){ V=P/I; R=V/I; }
-    else if (P!==null && V!==null){ I=P/V; R=V/I; }
-    else if (P!==null && R!==null){ I=Math.sqrt(P/R); V=I*R; }
+    // reset all to editable first
+    for (const k in ids){
+      const el = document.getElementById(ids[k]);
+      el.readOnly = false;
+      el.classList.remove('readonly');
+      el.placeholder = (k==='V'?'e.g., 12': k==='I'?'e.g., 2': k==='R'?'e.g., 6':'e.g., 24');
+      el.value = el.value; // keep values
+    }
+    // lock the chosen target field
+    const target = document.getElementById(ids[mode]);
+    target.readOnly = true;
+    target.classList.add('readonly');
+    target.placeholder = 'calculated';
+  }
+
+  function calcOhm(){
+    const mode = document.getElementById('ohmMode').value; // target to solve
+    let V=numFrom('ohmV'), I=numFrom('ohmI'), R=numFrom('ohmR'), P=numFrom('ohmP');
+
+    // count how many of the NON-target values are provided
+    let provided = 0;
+    if (mode!=='V' && V!==null) provided++;
+    if (mode!=='I' && I!==null) provided++;
+    if (mode!=='R' && R!==null) provided++;
+    if (mode!=='P' && P!==null) provided++;
+
+    if (provided < 2){
+      alert('Enter any two of the remaining three values to solve the selected one.');
+      return;
+    }
+
+    // Compute the selected variable using available pairs
+    if (mode==='V'){
+      // Need any two among I, R, P
+      if (I!==null && R!==null) V = I*R;
+      else if (P!==null && I!==null) V = P/I;
+      else if (P!==null && R!==null) V = Math.sqrt(P*R);
+      document.getElementById('ohmV').value = Number.isFinite(V)? V.toFixed(4):'';
+    }
+    else if (mode==='I'){
+      if (V!==null && R!==null) I = V/R;
+      else if (P!==null && V!==null) I = P/V;
+      else if (P!==null && R!==null) I = Math.sqrt(P/R);
+      document.getElementById('ohmI').value = Number.isFinite(I)? I.toFixed(4):'';
+    }
+    else if (mode==='R'){
+      if (V!==null && I!==null) R = V/I;
+      else if (V!==null && P!==null) R = (V*V)/P;
+      else if (P!==null && I!==null) R = P/(I*I);
+      document.getElementById('ohmR').value = Number.isFinite(R)? R.toFixed(4):'';
+    }
+    else if (mode==='P'){
+      if (V!==null && I!==null) P = V*I;
+      else if (V!==null && R!==null) P = (V*V)/R;
+      else if (I!==null && R!==null) P = I*I*R;
+      document.getElementById('ohmP').value = Number.isFinite(P)? P.toFixed(4):'';
+    }
+
+    // After solving the target, if V and I are known, fill missing pair derived values too
+    V = numFrom('ohmV'); I = numFrom('ohmI'); R = numFrom('ohmR'); P = numFrom('ohmP');
+    if (V!==null && I!==null){
+      if (R===null || !Number.isFinite(R)) { R = V/I; document.getElementById('ohmR').value = R.toFixed(4); }
+      if (P===null || !Number.isFinite(P)) { P = V*I; document.getElementById('ohmP').value = P.toFixed(4); }
+    }
 
     document.getElementById('ohmRes').innerHTML =
-      `V=${V.toFixed(2)} V<br>I=${I.toFixed(2)} A<br>R=${R.toFixed(2)} Ω<br>P=${P.toFixed(2)} W`;
+      `V = ${numFrom('ohmV')??'—'} V<br>`+
+      `I = ${numFrom('ohmI')??'—'} A<br>`+
+      `R = ${numFrom('ohmR')??'—'} Ω<br>`+
+      `P = ${numFrom('ohmP')??'—'} W`;
   }
-  function clearOhm(){ ['ohmV','ohmI','ohmR','ohmP'].forEach(id=>document.getElementById(id).value=''); document.getElementById('ohmRes').innerHTML=''; }
 
-  // ——— Transformer ———
+  function clearOhm(){
+    ['ohmV','ohmI','ohmR','ohmP'].forEach(id=>{
+      const el=document.getElementById(id); el.value='';
+    });
+    document.getElementById('ohmRes').innerHTML='';
+    setOhmMode(); // re-apply readonly state
+  }
+
+  // initialize mode lock on first load
+  setOhmMode();
+
+  /* ===================== Transformer ===================== */
   function calcXfmr(){
     const Vp=numFrom('tp_vp'), Ip=numFrom('tp_ip'); let ratio=numFrom('tp_ratio');
     if (ratio===null || ratio<=0) ratio=2;
@@ -200,25 +292,23 @@
   }
   function clearXfmr(){ ['tp_vp','tp_ip','tp_ratio'].forEach(id=>document.getElementById(id).value=''); document.getElementById('tpRes').innerHTML=''; }
 
-  // ——— 3-Phase (Corrected) ———
+  /* ===================== 3-Phase (stable) ===================== */
   function calcThree(){
     const Vl=numFrom('t_vl'), Il=numFrom('t_il'); let pf=numFrom('t_pf');
     if (Vl===null || Il===null){ alert('Enter line voltage and line current'); return; }
-    if (pf===null || pf<=0 || pf>1) pf=1;
+    if (pf===null || pf<=0 || pf>1) pf=1; // clamp if blank/invalid
 
-    const S_va = Math.sqrt(3) * Vl * Il;   // Apparent Power VA
-    const P_w  = S_va * pf;                // Real Power W
-    const Q_var = Math.sqrt(Math.max(0, (S_va*S_va) - (P_w*P_w))); // Reactive Power VAR
+    const S_va = Math.SQRT3 * Vl * Il;          // VA
+    const P_w  = S_va * pf;                      // W
+    const Q_var = Math.sqrt(Math.max(0, S_va*S_va - P_w*P_w)); // VAR
     const P_kw = P_w / 1000;
 
     document.getElementById('threeRes').innerHTML =
-      `S = ${S_va.toFixed(2)} VA<br>` +
-      `P = ${P_kw.toFixed(3)} kW (pf=${pf})<br>` +
-      `Q = ${Q_var.toFixed(2)} VAR`;
+      `S = ${S_va.toFixed(2)} VA<br>P = ${P_kw.toFixed(3)} kW (pf=${pf})<br>Q = ${Q_var.toFixed(2)} VAR`;
   }
   function clearThree(){ ['t_vl','t_il','t_pf'].forEach(id=>document.getElementById(id).value=''); document.getElementById('threeRes').innerHTML=''; }
 
-  // ——— Battery ———
+  /* ===================== Battery ===================== */
   function calcBattery(){
     const Ah=numFrom('b_ah'), V=numFrom('b_v'), loadW=numFrom('b_load');
     if (Ah===null || V===null || loadW===null){ alert('Enter Ah, Voltage, and Load'); return; }
