@@ -57,7 +57,6 @@
   @keyframes spinGear{100%{transform:rotate(360deg)}}
   .charge{animation:chargeAnim 1.5s infinite alternate;color:#00ff7f}
   @keyframes chargeAnim{from{opacity:.6} to{opacity:1; text-shadow:0 0 15px #00ff7f}}
-  .motor{animation:spinGear 6s linear infinite;color:#ff66ff}
   @keyframes fadeSlideIn{to{opacity:1;transform:translateY(0)}}
 
   /* —— Cards —— */
@@ -101,34 +100,27 @@
   <button onclick="showCalc('xfmr')"><div class="icon rotate">🔄</div>Transformer</button>
   <button onclick="showCalc('three')"><div class="icon spin">⚙️</div>3-Phase Power</button>
   <button onclick="showCalc('battery')"><div class="icon charge">🔋</div>Battery Backup</button>
-  <button onclick="showCalc('motor')"><div class="icon motor">🌀</div>Motor</button>
+  <a href="motor.html"><button><div class="icon">🌀</div>Motor</button></a>
 </div>
 
-<!-- Ohm’s Law (same as before) -->
-<div id="ohm" class="card"> ... (keep your existing Ohm's law code here) ... </div>
+<!-- Ohm’s Law -->
+<div id="ohm" class="card">
+  <!-- keep your ohm's law code as before -->
+</div>
 
 <!-- Transformer -->
-<div id="xfmr" class="card"> ... (keep your transformer code) ... </div>
+<div id="xfmr" class="card">
+  <!-- keep your transformer code as before -->
+</div>
 
 <!-- 3-Phase Power -->
-<div id="three" class="card"> ... (keep your 3-phase code) ... </div>
+<div id="three" class="card">
+  <!-- keep your 3-phase code as before -->
+</div>
 
 <!-- Battery Backup -->
-<div id="battery" class="card"> ... (keep your battery code) ... </div>
-
-<!-- Motor Calculator -->
-<div id="motor" class="card">
-  <h2>Motor Calculator</h2>
-  <label>Motor Power (kW)</label><input id="m_kw" type="number" step="any" placeholder="e.g., 15">
-  <label>Voltage (V)</label><input id="m_v" type="number" step="any" placeholder="e.g., 415">
-  <label>Current (A)</label><input id="m_i" type="number" step="any" placeholder="e.g., 28">
-  <label>Efficiency (0-1)</label><input id="m_eff" type="number" step="any" placeholder="e.g., 0.9">
-  <label>Power Factor (0-1)</label><input id="m_pf" type="number" step="any" placeholder="e.g., 0.85">
-  <div class="controls">
-    <button class="calc-btn" onclick="calcMotor()">Calculate</button>
-    <button class="calc-btn secondary" onclick="clearMotor()">Clear</button>
-  </div>
-  <div id="motorRes" class="result"></div>
+<div id="battery" class="card">
+  <!-- keep your battery code as before -->
 </div>
 
 <script>
@@ -146,21 +138,7 @@
     const n=parseFloat(raw); return Number.isFinite(n)?n:null;
   }
 
-  // Motor
-  function calcMotor(){
-    const PkW=numFrom('m_kw'), V=numFrom('m_v'), I=numFrom('m_i'), eff=numFrom('m_eff'), pf=numFrom('m_pf');
-    if(PkW===null||V===null||I===null||eff===null||pf===null){alert('Enter all values');return;}
-    const S_va=Math.SQRT3*V*I;
-    const P_out=PkW*1000;
-    const P_in=S_va*pf*eff;
-    document.getElementById('motorRes').innerHTML=
-      `Apparent Power S = ${S_va.toFixed(2)} VA<br>`+
-      `Input Power ≈ ${P_in.toFixed(2)} W<br>`+
-      `Output Power = ${P_out.toFixed(2)} W<br>`+
-      `Efficiency = ${(eff*100).toFixed(1)} %<br>`+
-      `Power Factor = ${pf}`;
-  }
-  function clearMotor(){['m_kw','m_v','m_i','m_eff','m_pf'].forEach(id=>document.getElementById(id).value='');document.getElementById('motorRes').innerHTML='';}
+  // Keep all your existing JS functions for Ohm, Transformer, 3-Phase, Battery here
 </script>
 </body>
 </html>
