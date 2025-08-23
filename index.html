@@ -135,67 +135,17 @@ cursor:not-allowed;
 <button onclick="showCalc('battery')"><div class="icon charge">🔋</div>Battery Backup</button>
 </div>
 
-<!-- Ohm’s Law -->
-<div id="ohm" class="card">
-<h2>Ohm's Law</h2>
-<div class="mode-box">
-<label for="ohmMode">Select which value to calculate</label>
-<select id="ohmMode" onchange="setOhmMode()">
-<option value="V">Voltage (V)</option>
-<option value="I">Current (I)</option>
-<option value="R">Resistance (Ω)</option>
-<option value="P">Power (W)</option>
-</select>
-<div class="hint">Enter <b>any two</b> of the other values</div>
-</div>
-<label>Voltage (V)</label><input id="ohmV" type="text" placeholder="e.g., 12">
-<label>Current (A)</label><input id="ohmI" type="text" placeholder="e.g., 2">
-<label>Resistance (Ω)</label><input id="ohmR" type="text" placeholder="e.g., 6">
-<label>Power (W)</label><input id="ohmP" type="text" placeholder="e.g., 24">
-<div class="controls">
-<button class="calc-btn" onclick="calcOhm()">Calculate</button>
-<button class="calc-btn secondary" onclick="clearOhm()">Clear</button>
-</div>
-<div id="ohmRes" class="result"></div>
-</div>
-
-<!-- Transformer -->
-<div id="xfmr" class="card">
-<h2>Transformer</h2>
-<label>Primary Voltage (Vp)</label><input id="tp_vp" type="text">
-<label>Primary Current (Ip)</label><input id="tp_ip" type="text">
-<label>Turns Ratio (Np/Ns)</label><input id="tp_ratio" type="text" placeholder="Default 2">
-<div class="controls">
-<button class="calc-btn" onclick="calcXfmr()">Calculate</button>
-<button class="calc-btn secondary" onclick="clearXfmr()">Clear</button>
-</div>
-<div id="tpRes" class="result"></div>
-</div>
-
 <!-- 3-Phase Power -->
 <div id="three" class="card">
 <h2>3-Phase Power</h2>
-<label>Line Voltage (V)</label><input id="t_vl" type="text">
-<label>Line Current (A)</label><input id="t_il" type="text">
+<label>Line Voltage (V)</label><input id="t_vl" type="text" placeholder="e.g. 415">
+<label>Line Current (A)</label><input id="t_il" type="text" placeholder="e.g. 10">
 <label>Power Factor</label><input id="t_pf" type="text" placeholder="0.8">
 <div class="controls">
 <button class="calc-btn" onclick="calcThree()">Calculate</button>
 <button class="calc-btn secondary" onclick="clearThree()">Clear</button>
 </div>
 <div id="threeRes" class="result"></div>
-</div>
-
-<!-- Battery Backup -->
-<div id="battery" class="card">
-<h2>Battery Backup</h2>
-<label>Battery Capacity (Ah)</label><input id="b_ah" type="text">
-<label>Voltage (V)</label><input id="b_v" type="text">
-<label>Load (W)</label><input id="b_load" type="text">
-<div class="controls">
-<button class="calc-btn" onclick="calcBattery()">Calculate</button>
-<button class="calc-btn secondary" onclick="clearBattery()">Clear</button>
-</div>
-<div id="batRes" class="result"></div>
 </div>
 
 <script>
@@ -208,96 +158,37 @@ function showCalc(id){
   card.scrollIntoView({behavior:'smooth'});
 }
 
-// Parse numbers safely
+// Convert input safely → return number or 0
 function numFrom(id){
   const raw=(document.getElementById(id).value||"").trim().replace(/,/g,'.');
-  if(raw==="" || isNaN(raw)) return null;
+  if(raw==="" || isNaN(raw)) return 0;
   return parseFloat(raw);
 }
 
-// Allow only numbers, dot, minus
-document.querySelectorAll("input[type=text]").forEach(inp=>{
-  inp.addEventListener("input",function(){
-    this.value=this.value.replace(/[^0-9.\-]/g,'');
-  });
-});
-
-// Ohm’s Law
-function setOhmMode(){
-  const mode=document.getElementById('ohmMode').value;
-  const ids={V:'ohmV',I:'ohmI',R:'ohmR',P:'ohmP'};
-  for(const k in ids){
-    const el=document.getElementById(ids[k]);
-    el.readOnly=false;el.classList.remove('readonly');
-  }
-  const target=document.getElementById(ids[mode]);
-  target.readOnly=true;target.classList.add('readonly');
-  target.placeholder='calculated';
-}
-function calcOhm(){
-  const mode=document.getElementById('ohmMode').value;
-  let V=numFrom('ohmV'),I=numFrom('ohmI'),R=numFrom('ohmR'),P=numFrom('ohmP');
-  let provided=0;
-  if(mode!=='V'&&V!==null)provided++;
-  if(mode!=='I'&&I!==null)provided++;
-  if(mode!=='R'&&R!==null)provided++;
-  if(mode!=='P'&&P!==null)provided++;
-  if(provided<2){document.getElementById('ohmRes').innerHTML="<span style='color:red'>Enter any two values</span>";return;}
-
-  if(mode==='V'){if(I!==null&&R!==null) V=I*R;else if(P!==null&&I!==null) V=P/I;else if(P!==null&&R!==null) V=Math.sqrt(P*R);
-    document.getElementById('ohmV').value=V?.toFixed(4)||'';}
-  else if(mode==='I'){if(V!==null&&R!==null) I=V/R;else if(P!==null&&V!==null) I=P/V;else if(P!==null&&R!==null) I=Math.sqrt(P/R);
-    document.getElementById('ohmI').value=I?.toFixed(4)||'';}
-  else if(mode==='R'){if(V!==null&&I!==null) R=V/I;else if(V!==null&&P!==null) R=(V*V)/P;else if(P!==null&&I!==null) R=P/(I*I);
-    document.getElementById('ohmR').value=R?.toFixed(4)||'';}
-  else if(mode==='P'){if(V!==null&&I!==null) P=V*I;else if(V!==null&&R!==null) P=(V*V)/R;else if(I!==null&&R!==null) P=I*I*R;
-    document.getElementById('ohmP').value=P?.toFixed(4)||'';}
-
-  document.getElementById('ohmRes').innerHTML=
-  `V=${numFrom('ohmV')??'—'} V<br>I=${numFrom('ohmI')??'—'} A<br>R=${numFrom('ohmR')??'—'} Ω<br>P=${numFrom('ohmP')??'—'} W`;
-}
-function clearOhm(){['ohmV','ohmI','ohmR','ohmP'].forEach(id=>document.getElementById(id).value='');document.getElementById('ohmRes').innerHTML='';setOhmMode();}
-
-// Transformer
-function calcXfmr(){
-  const Vp=numFrom('tp_vp'),Ip=numFrom('tp_ip');let ratio=numFrom('tp_ratio');
-  if(ratio===null||ratio<=0)ratio=2;
-  if(Vp===null||Ip===null){document.getElementById('tpRes').innerHTML="<span style='color:red'>Enter primary V and I</span>";return;}
-  const Vs=Vp/ratio,Is=Ip*ratio;
-  document.getElementById('tpRes').innerHTML=`Vs=${Vs.toFixed(2)} V<br>Is=${Is.toFixed(2)} A<br>Turns Ratio=${ratio}`;
-}
-function clearXfmr(){['tp_vp','tp_ip','tp_ratio'].forEach(id=>document.getElementById(id).value='');document.getElementById('tpRes').innerHTML='';}
-
-// 3-Phase
+// 3-Phase Calc
 function calcThree(){
-  const Vl=numFrom('t_vl'),Il=numFrom('t_il');let pf=numFrom('t_pf');
-  if(Vl===null||Il===null){document.getElementById('threeRes').innerHTML="<span style='color:red'>Enter line voltage and current</span>";return;}
-  if(pf===null||pf<=0||pf>1)pf=1;
+  const Vl=numFrom('t_vl');
+  const Il=numFrom('t_il');
+  let pf=numFrom('t_pf');
+
+  if(Vl<=0 || Il<=0){
+    document.getElementById('threeRes').innerHTML="<span style='color:red'>Enter valid Line Voltage and Current</span>";
+    return;
+  }
+  if(pf<=0 || pf>1) pf=1;
 
   const S_va=Math.SQRT3*Vl*Il;
   const P_w=S_va*pf;
   const Q_var=Math.sqrt(Math.max(0,(S_va*S_va)-(P_w*P_w)));
   const P_kw=P_w/1000;
+  const S_kva=S_va/1000;
 
   document.getElementById('threeRes').innerHTML=
-  `S=${S_va.toFixed(2)} VA<br>P=${P_kw.toFixed(3)} kW (pf=${pf})<br>Q=${Q_var.toFixed(2)} VAR`;
+  `S = ${S_va.toFixed(2)} VA (${S_kva.toFixed(3)} kVA)<br>
+   P = ${P_kw.toFixed(3)} kW (pf=${pf})<br>
+   Q = ${Q_var.toFixed(2)} VAR`;
 }
 function clearThree(){['t_vl','t_il','t_pf'].forEach(id=>document.getElementById(id).value='');document.getElementById('threeRes').innerHTML='';}
-
-// Battery
-function calcBattery(){
-  const Ah=numFrom('b_ah'),V=numFrom('b_v'),loadW=numFrom('b_load');
-  if(Ah===null||V===null||loadW===null){document.getElementById('batRes').innerHTML="<span style='color:red'>Enter Ah, Voltage, and Load</span>";return;}
-  const dod=0.8,eff=0.9;
-  const totalWh=Ah*V,usableWh=totalWh*dod*eff;
-  const hours=usableWh/loadW;
-  const hr=Math.floor(hours),min=Math.round((hours-hr)*60);
-  document.getElementById('batRes').innerHTML=
-  `Backup Time ≈ ${hr}h ${min}m<br>(Usable Energy = ${usableWh.toFixed(1)} Wh)`;
-}
-function clearBattery(){['b_ah','b_v','b_load'].forEach(id=>document.getElementById(id).value='');document.getElementById('batRes').innerHTML='';}
-
-setOhmMode();
 </script>
 </body>
 </html>
