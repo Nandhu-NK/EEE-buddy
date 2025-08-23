@@ -273,10 +273,12 @@ function calcThree(){
   const Vl=numFrom('t_vl'),Il=numFrom('t_il');let pf=numFrom('t_pf');
   if(Vl===null||Il===null){document.getElementById('threeRes').innerHTML="<span style='color:red'>Enter line voltage and current</span>";return;}
   if(pf===null||pf<=0||pf>1)pf=1;
+
   const S_va=Math.SQRT3*Vl*Il;
   const P_w=S_va*pf;
-  const Q_var=Math.sqrt(Math.max(0,S_va*S_va-P_w*P_w));
+  const Q_var=Math.sqrt(Math.max(0,(S_va*S_va)-(P_w*P_w)));
   const P_kw=P_w/1000;
+
   document.getElementById('threeRes').innerHTML=
   `S=${S_va.toFixed(2)} VA<br>P=${P_kw.toFixed(3)} kW (pf=${pf})<br>Q=${Q_var.toFixed(2)} VAR`;
 }
